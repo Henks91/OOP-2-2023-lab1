@@ -51,7 +51,14 @@ namespace Datalager
             {
                 Fill();
             }
+
+            if (BokRepository.IsEmpty())
+            {
+                Fill();
+            }
         }
+
+
 
         /// <summary>
         ///  Save the changes made. Does nothing in this case.

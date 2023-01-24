@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Affärslager;
+﻿using Affärslager;
 using Entiteter;
+using System;
+using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 
 namespace Presentationslager
 {
@@ -88,7 +86,7 @@ namespace Presentationslager
             while (!stängNer)
             {
 
-                Console.Clear();
+
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("**HUVUDMENY**");
                 Console.WriteLine("");
@@ -107,17 +105,16 @@ namespace Presentationslager
                 switch (RättSiffra("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
                 {
                     case 1:
-                        //Console.WriteLine("Skriv från datum: ");
-                        //Console.WriteLine("Skriv till datum: ");
 
-                        List <Bok> böckerna = kontroller.HämtaTillgängligaBöcker();
-
-                        foreach (Bok b in böckerna)
+                   
+                        IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
+                        int i = 1;
+                        foreach (Bok b in tillgänglig)
                         {
-                            Console.WriteLine($"{b.ISBN}, {b.Titel}");
+                            Console.Write("{0}. ", i++);
+                            Write(b);
                         }
                         Console.ReadLine();
-
                         break;
                     case 2:
 
@@ -135,6 +132,10 @@ namespace Presentationslager
                 }
 
             }
+        }
+        private void Write(Bok b)
+        {
+            Console.WriteLine(b.Titel, b.ISBN);
         }
 
         private Kontroller kontroller;

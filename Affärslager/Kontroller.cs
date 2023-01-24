@@ -30,18 +30,31 @@ namespace Affärslager
             return false;
         }
 
-        public List<Bok> HämtaTillgängligaBöcker()
-        {
-            List<Bok> TillgängligaBöcker = new List<Bok>();
+        //public void HämtaTillgängligaBöcker()
+        //{
 
-            foreach (Bok b in TillgängligaBöcker) 
+            
+        //    Predicate<Bok> Tillgänglighet = (Bok bo) => { return bo.Status == true; };
+        //    List<Bok> TillgängligaBöcker = new List<Bok>();
+        //    foreach (Bok b in TillgängligaBöcker) 
+        //    {
+        //        if (b.Status == true)
+        //        {
+        //            TillgängligaBöcker.Find(Tillgänglighet);
+        //        }
+        //       Console.WriteLine(b.Titel + b.ISBN);
+        //    }
+            
+        //}
+
+        public IList<Bok> HämtaTillgängligaBöcker()
+        {
+            List<Bok> böcker = new List<Bok>();
+            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.Status))
             {
-                if (b.Status == true)
-                {
-                    unitOfWork.BokRepository.Add(b);
-                }
+                böcker.Add(b);
             }
-            return TillgängligaBöcker;
+            return böcker;
         }
 
 

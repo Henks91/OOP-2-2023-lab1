@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Entiteter;
 
 namespace Datalager
 {
@@ -71,9 +72,12 @@ namespace Datalager
                 table = new List<T>();
             }
         }
+
         // This is a bit strange but I don't want multiple lists of the class T.
         // NOTE: This is very bad if you use multiple threads.
         private static IList<T> table;
+
+
     }
 
 
