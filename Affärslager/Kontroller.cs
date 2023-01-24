@@ -38,7 +38,7 @@ namespace Affärslager
             {
                 if (b.Status == true)
                 {
-                    repository.Add(b);
+                    unitOfWork.BokRepository.Add(b);
                 }
             }
             return TillgängligaBöcker;

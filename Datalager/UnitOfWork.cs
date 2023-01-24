@@ -46,6 +46,11 @@ namespace Datalager
             FakturaRepository = new Repository<Faktura>();
             MedlemRepository = new Repository<Medlem>();
 
+            // Initialize the tables if this is the first UnitOfWork.
+            if (ExpiditRepository.IsEmpty())
+            {
+                Fill();
+            }
         }
 
         /// <summary>
