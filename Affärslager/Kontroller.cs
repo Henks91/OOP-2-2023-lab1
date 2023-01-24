@@ -15,7 +15,7 @@ namespace Affärslager
         public Expidit Autentisering
         {
             get; private set;
-        }
+        }        
 
         public bool Inloggning(int anstNr, string lösenord)
         {
@@ -30,31 +30,31 @@ namespace Affärslager
             return false;
         }
 
-        //public void HämtaTillgängligaBöcker()
-        //{
-
-            
-        //    Predicate<Bok> Tillgänglighet = (Bok bo) => { return bo.Status == true; };
-        //    List<Bok> TillgängligaBöcker = new List<Bok>();
-        //    foreach (Bok b in TillgängligaBöcker) 
-        //    {
-        //        if (b.Status == true)
-        //        {
-        //            TillgängligaBöcker.Find(Tillgänglighet);
-        //        }
-        //       Console.WriteLine(b.Titel + b.ISBN);
-        //    }
-            
-        //}
-
-            foreach (Bok b in TillgängligaBöcker) 
+        public IList<Bok> HämtaTillgängligaBöcker()
+        {
+            List<Bok> böcker = new List<Bok>();
+            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.Status == true))
             {
-                if (b.Status == true)
-                {
-                    unitOfWork.BokRepository.Add(b);
-                }
+                böcker.Add(b);
             }
-            return TillgängligaBöcker;
+            return böcker;
+        }
+
+        public void SkapaBokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
+        {
+            Bokning bokning = new Bokning(bokningsNr, expidit, medlem, utTid, faktiskUtTid, återTid);
+            unitOfWork.BokningRepository.Add(bokning);
+        }
+
+        public Bokning BokaBok()
+        {
+            b.Status = false;
+            Bokning bo = new Bokning();
+            unitOfWork.BokningRepository.Add(bo);
+            LoggedIn.Reserved = r;
+            unitOfWork.Save();
+
+            return r;
         }
 
 

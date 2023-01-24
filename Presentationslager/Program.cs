@@ -105,7 +105,8 @@ namespace Presentationslager
                 switch (RättSiffra("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
                 {
                     case 1:
-
+                        //Console.WriteLine("Ange från vilket datum du vill låna en bok: ");
+                        //DateTime val = Console.ReadLine();
                    
                         IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
                         int i = 1;
@@ -115,6 +116,13 @@ namespace Presentationslager
                             Write(b);
                         }
                         Console.ReadLine();
+                        
+                        Console.WriteLine("Vad är ditt medlemsnummer? ");
+                        int medlemsnr = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Från vilket datum vill du hyra böcker: ");
+
+
+                        kontroller.SkapaBokning(kontroller.Autentisering.AnstNr, medlemsnr, );
                         break;
                     case 2:
 

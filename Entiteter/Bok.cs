@@ -12,6 +12,7 @@ namespace Entiteter
         public int ISBN { get; set; }
 
         public bool Status { get; set; }
+       
 
         public Bok(string titel, int isbn, bool status)
         {
