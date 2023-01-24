@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 
 namespace Entiteter
 {
-    class Bok
+    public class Bok
     {
         public string Titel { get; set; }
         public int ISBN { get; set; }
-        public Bok(string titel, int isbn)
+
+        public bool Status { get; set; }
+
+        public Bok(string titel, int isbn, bool status)
         {
             Titel = titel;
             ISBN = isbn;
+            Status = status;
         }
     }
 }

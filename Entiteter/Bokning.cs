@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entiteter
 {
-    class Bokning
+    public class Bokning
     {
         public int BokningsNr = 1;
 

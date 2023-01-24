@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Datalager\Datalager.csproj" />
+    <ProjectReference Include="..\Entiteter\Entiteter.csproj" />
+  </ItemGroup>
+
 </Project>

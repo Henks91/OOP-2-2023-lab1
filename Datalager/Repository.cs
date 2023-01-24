@@ -10,7 +10,7 @@ namespace Datalager
     /// <summary>
     ///  Generic repository class.
     /// </summary>
-    class Repository<T>
+    public class Repository<T>
         where T : class
     {
         /// <summary>

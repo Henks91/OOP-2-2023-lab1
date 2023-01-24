@@ -6,65 +6,68 @@ using System.Threading.Tasks;
 using Affärslager;
 using Entiteter;
 
-namespace Expeditionen
+namespace Presentationslager
 {
-    internal class Program
+    class Program
     {
         // Kolla patriks kod för rumsbokning - Sax
+
+
         static void Main(string[] args)
         {
-            
-                Console.WriteLine("Welcome to the CarPool!");
-                while (true)
+            new Program().Main();
+        }
+
+        private Program()
+        {
+            kontroller = new Kontroller();
+        }
+
+        private void Main()
+        {
+
+            Console.WriteLine("Inloggning för Expiditering");
+            while (true)
+            {
+                try
                 {
-                    try
+                    if (Inloggning())
                     {
-                        if (Autentisering())
-                        {
-                            Console.WriteLine("You are now logged in {0}.", carPool.LoggedIn.Name);
-                            MainMenu();
-                            // For now the MainMenu() isn't used to choose anything.
-                            if (carPool.LoggedIn.Reserved == null)
-                            {
-                                ReserveCar();
-                            }
-                            else
-                            {
-                                ReturnCar();
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Failed to log in.");
-                        }
+                        Console.WriteLine("You are now logged in {0}.", kontroller.Autentisering.Namn);
+                        Menyn();
+                        // For now the MainMenu() isn't used to choose anything.
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Console.WriteLine("ERROR: " + e.Message);
+                        Console.WriteLine("Failed to log in.");
                     }
                 }
-            
-
-
-
-
-            bool logg = true;
-            while (logg)
-            {
-                Console.WriteLine("Inloggningsmeny");
-
-
-                Console.WriteLine("Ange användarnamn");
-                string InmatAnv = Console.ReadLine();
-                Console.WriteLine("Ange Lösenord");
-                string InmatLösen = Console.ReadLine();
-
+                catch (Exception e)
+                {
+                    Console.WriteLine("ERROR: " + e.Message);
+                }
             }
-
-
-
-
         }
+
+        private bool Inloggning()
+
+        {
+            string idToParse = "";
+            int id;
+            while (!int.TryParse(idToParse, out id))
+            {
+                Console.WriteLine("Vänligen ange anställningsnummer: ");
+                idToParse = Console.ReadLine();
+            }
+            Console.WriteLine("Ange lösenord: ");
+            string password = Console.ReadLine();
+
+            return kontroller.Inloggning(id, password);
+        }
+
+
+
+
 
         static uint RättSiffra(string label) // typ av int accepterar endast positiva tal
         {
@@ -78,7 +81,7 @@ namespace Expeditionen
             return siffra;
         }
 
-        static void menyn()
+        private void Menyn()
         {
             Console.WriteLine("Biblioteket");
             bool stängNer = false; // Variabel för att avsluta programmet vid specifikt menyval
@@ -104,9 +107,17 @@ namespace Expeditionen
                 switch (RättSiffra("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
                 {
                     case 1:
-                        Console.WriteLine("Skriv från datum: ");
+                        //Console.WriteLine("Skriv från datum: ");
+                        //Console.WriteLine("Skriv till datum: ");
 
-                        Console.WriteLine("Skriv till datum: ");
+                        List <Bok> böckerna = kontroller.HämtaTillgängligaBöcker();
+
+                        foreach (Bok b in böckerna)
+                        {
+                            Console.WriteLine($"{b.ISBN}, {b.Titel}");
+                        }
+                        Console.ReadLine();
+
                         break;
                     case 2:
 
@@ -125,5 +136,7 @@ namespace Expeditionen
 
             }
         }
+
+        private Kontroller kontroller;
     }
 }

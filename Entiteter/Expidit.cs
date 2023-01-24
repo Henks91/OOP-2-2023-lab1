@@ -13,5 +13,11 @@
             Lösenord = lösenord;
             Roll = roll;
         }
+
+        public bool Lösenordskontroll(string försök)
+        {
+            return Lösenord == försök;
+        }
+
     }
 }

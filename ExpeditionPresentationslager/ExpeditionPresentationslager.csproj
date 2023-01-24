@@ -49,5 +49,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Affärslager\Affärslager.csproj">
+      <Project>{51a0fa23-1447-4740-9be8-f6254ad1f7e3}</Project>
+      <Name>Affärslager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entiteter\Entiteter.csproj">
+      <Project>{2fce49ef-7b8e-45c5-abf7-5fe7b8d0a3f0}</Project>
+      <Name>Entiteter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
