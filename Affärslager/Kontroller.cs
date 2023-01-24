@@ -30,38 +30,32 @@ namespace Affärslager
             return false;
         }
 
-        //public IEnumerable<T> Find(Func<T, bool> predicate)
+        //public void HämtaTillgängligaBöcker()
         //{
-        //    return table.Where(predicate);
+
+            
+        //    Predicate<Bok> Tillgänglighet = (Bok bo) => { return bo.Status == true; };
+        //    List<Bok> TillgängligaBöcker = new List<Bok>();
+        //    foreach (Bok b in TillgängligaBöcker) 
+        //    {
+        //        if (b.Status == true)
+        //        {
+        //            TillgängligaBöcker.Find(Tillgänglighet);
+        //        }
+        //       Console.WriteLine(b.Titel + b.ISBN);
+        //    }
+            
         //}
 
-        public IList<Bok> HämtaTillgängligaBöcker()
-
-        {
-            List<Bok> böcker = new List<Bok>();
-            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.Status))
-	        {
-                böcker.Add(b);
-	        }
-            return böcker;
+            foreach (Bok b in TillgängligaBöcker) 
+            {
+                if (b.Status == true)
+                {
+                    unitOfWork.BokRepository.Add(b);
+                }
+            }
+            return TillgängligaBöcker;
         }
-            //unitOfWork.BokRepository.Find()
-
-            //Predicate<Bok> Hittaböcker = (Bok b) => { return b.Status == true; };
-            //Bok Tbok = Find(Hittaböcker);
-
-            //List<Bok> TillgängligaBöcker = new List<Bok>();
-
-            //foreach (Bok b in TillgängligaBöcker) 
-            //{
-            //    if (b.Status == true)
-            //    {
-            //        unitOfWork.BokRepository.Add(b);
-            //    }
-            //}
-            //return TillgängligaBöcker;
-
-        //}
 
 
         // Kolla patriks kod för rumsbokning - Sax
