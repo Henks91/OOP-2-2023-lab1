@@ -51,14 +51,7 @@ namespace Datalager
             {
                 Fill();
             }
-
-            if (BokRepository.IsEmpty())
-            {
-                Fill();
-            }
         }
-
-
 
         /// <summary>
         ///  Save the changes made. Does nothing in this case.
@@ -67,7 +60,8 @@ namespace Datalager
             { 
 
             }
-            private void Fill()
+        
+        private void Fill()
             {
             #region Expiditer
                 ExpiditRepository.Add(new Expidit(11, "Björn", "Björn1337", "Lärling"));
@@ -87,6 +81,18 @@ namespace Datalager
             MedlemRepository.Add(new Medlem(2, "GandalfWhite", "073-13371337", "Gandalf@CarrierOfLight.se"));
             MedlemRepository.Add(new Medlem(3, "GandalfGrey", "073-73317331", "Gandalf@CarrierOfRock.se"));
             #endregion Medlemmar
-            }
+
+            #region Bokningar
+
+            BokningRepository.Add
+               (new Bokning(1, ExpiditRepository.FirstOrDefault(e => e.AnstNr == 11 || e.AnstNr == 22),MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2),
+                                BokRepository.FirstOrDefault(b => b.ISBN == 3435342),
+                                DateTime.Now, DateTime.Now + TimeSpan.FromDays(7), DateTime.Now + TimeSpan.FromDays(14)));
+
+            MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2).bokad =
+                BokningRepository.FirstOrDefault(b => true);
+
+            #endregion
+        }
     }
 }

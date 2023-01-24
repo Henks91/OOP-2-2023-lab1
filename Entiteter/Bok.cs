@@ -12,12 +12,18 @@ namespace Entiteter
         public int ISBN { get; set; }
 
         public bool Status { get; set; }
+       
 
         public Bok(string titel, int isbn, bool status)
         {
             Titel = titel;
             ISBN = isbn;
             Status = status;
+        }
+
+        public static Bok Find(Predicate<Bok> hittaböcker)
+        {
+            throw new NotImplementedException();
         }
     }
 }
