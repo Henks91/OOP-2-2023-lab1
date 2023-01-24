@@ -110,15 +110,15 @@ namespace Presentationslager
                         //Console.WriteLine("Skriv från datum: ");
                         //Console.WriteLine("Skriv till datum: ");
 
-                        List <Bok> böckerna = kontroller.HämtaTillgängligaBöcker();
+                        kontroller.HämtaTillgängligaBöcker();
 
-                        foreach (Bok b in böckerna)
-                        {
-                            Console.WriteLine($"{b.ISBN}, {b.Titel}");
-                        }
-                        Console.ReadLine();
+                        //foreach (Bok b in kontroller.HämtaTillgängligaBöcker())
+                        //{
+                        //    Console.WriteLine($"{b.ISBN}, {b.Titel}");
+                        //}
+                        //Console.ReadLine();
 
-                        break;
+                        continue;
                     case 2:
 
                         break;

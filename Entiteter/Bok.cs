@@ -19,5 +19,10 @@ namespace Entiteter
             ISBN = isbn;
             Status = status;
         }
+
+        public static Bok Find(Predicate<Bok> hittaböcker)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
