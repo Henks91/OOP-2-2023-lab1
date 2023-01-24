@@ -2,7 +2,6 @@
 using Entiteter;
 using System;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 
 namespace Presentationslager
 {
