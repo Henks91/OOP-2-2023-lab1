@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Datalager;
 using Entiteter;
 
@@ -40,22 +41,69 @@ namespace Affärslager
             return böcker;
         }
 
-        public void SkapaBokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
+        public void SkapaBokning(int boknr, Expidit expidit, Medlem medlem  , DateTime utTid, DateTime återTid, DateTime faktiskUtTid)
         {
-            Bokning bokning = new Bokning(bokningsNr, expidit, medlem, utTid, faktiskUtTid, återTid);
+            Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid);
             unitOfWork.BokningRepository.Add(bokning);
         }
 
-        public Bokning BokaBok()
+        public Medlem Hittamedlem(int medlemNr)
         {
-            b.Status = false;
-            Bokning bo = new Bokning();
-            unitOfWork.BokningRepository.Add(bo);
-            LoggedIn.Reserved = r;
-            unitOfWork.Save();
-
-            return r;
+            Medlem medlem = unitOfWork.MedlemRepository.FirstOrDefault(e => e.MedlemsNr == medlemNr);
+            if (medlem != null)
+            {
+                medlemNr = medlem.MedlemsNr;
+            }
+            return medlem;
         }
+
+        //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
+        //{
+            
+        //    Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(db => db.BokningsNr == bobo.BokningsNr || db.Medlem.MedlemsNr == bobo.Medlem.MedlemsNr);
+
+        //    if (dinBokning != null && dinBokning.BokningsNr == bobo.BokningsNr)
+        //    {
+        //        bobo.BokningsNr = dinBokning.BokningsNr;
+
+        //    }
+        //    else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bobo.BokningsNr)
+        //    {
+        //        bobo.Medlem.MedlemsNr = dinBokning.Medlem.MedlemsNr;
+        //    }
+        //    return dinBokning as IList<Bokning>; // waaw
+
+        //}
+
+
+        public Bokning VisaBokning(int bob) // accepterade förlusten efter 2h - Denna funkar.
+        {
+            IList<Bokning> boknings = new List<Bokning>(); // denna kan möjligtvis ändras från IList till IEnumerable
+            Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bob || dinBokning.Medlem.MedlemsNr == bob);
+            boknings.Where(db => db.BokningsNr == bob || db.Medlem.MedlemsNr == bob); 
+            if (dinBokning != null && dinBokning.BokningsNr == bob)
+            {
+                bob = dinBokning.BokningsNr;
+
+            }
+            else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bob)
+            {
+                bob = dinBokning.Medlem.MedlemsNr;
+            }
+            return dinBokning; 
+
+        }
+
+
+        //public Bokning BokaBok()
+        //{
+
+        //    Bokning bo = new Bokning();
+        //    unitOfWork.BokningRepository.Add(bo);
+        //    LoggedIn.Reserved = r;
+        //    unitOfWork.Save();
+        //    return r;
+        //}
 
 
         // Kolla patriks kod för rumsbokning - Sax
@@ -113,7 +161,6 @@ namespace Affärslager
         /// <returns></returns>
         /// 
         private UnitOfWork unitOfWork;
-        private Repository<Bok> repository;
     }
 
 

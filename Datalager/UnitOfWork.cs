@@ -64,33 +64,40 @@ namespace Datalager
         private void Fill()
             {
             #region Expiditer
-                ExpiditRepository.Add(new Expidit(11, "Björn", "Björn1337", "Lärling"));
-
-                ExpiditRepository.Add(new Expidit(22, "a", "a", "Chef"));
+            ExpiditRepository.Add(new Expidit(11, "Magnus", "a", "Utvecklingsansvarig"));
+            ExpiditRepository.Add(new Expidit(22, "Gustaf", "b", "Bibliotekarie"));
+            ExpiditRepository.Add(new Expidit(33, "Josefin", "c", "Platschef"));
+            ExpiditRepository.Add(new Expidit(44, "Magaret", "d", "Bibliotekarie"));
             #endregion Expediter
 
             #region Böcker
 
-            BokRepository.Add(new Bok("Henriks mardrömshål", 1281894, true));
-            BokRepository.Add(new Bok("Fredrik osynliga hjälten", 183943, true ));
-            BokRepository.Add(new Bok("Carl & Den heliga Snusmanualen", 3435342, false));
+            BokRepository.Add(new Bok("Bröd Och Mjölk", 1281894, false));
+            BokRepository.Add(new Bok("Allt är mitt", 183943, false));
+            BokRepository.Add(new Bok("Under Magnoliaträden", 3435342, true));
+            BokRepository.Add(new Bok("Den andre", 442312, true));
+            BokRepository.Add(new Bok("Icebreaker", 342345, true));
+            BokRepository.Add(new Bok("Harry Potter", 656431, true));
+            BokRepository.Add(new Bok("Det slutar med oss", 333124, true));
+            BokRepository.Add(new Bok("Löpa Varg", 978554, true));
+            BokRepository.Add(new Bok("Blodmåne", 1023451, true));
             #endregion Böcker
 
             #region Medlemmar
-            MedlemRepository.Add(new Medlem(1, "Lukas", "073-423532", "Lukas@lukasserver.se"));
-            MedlemRepository.Add(new Medlem(2, "GandalfWhite", "073-13371337", "Gandalf@CarrierOfLight.se"));
-            MedlemRepository.Add(new Medlem(3, "GandalfGrey", "073-73317331", "Gandalf@CarrierOfRock.se"));
+            MedlemRepository.Add(new Medlem(1, "Lukas Blomström", "073-4235322", "Lukas.blomström@hotmail.com"));
+            MedlemRepository.Add(new Medlem(2, "Jack Stenman", "073-13371337", "jacksten@gmail.com"));
+            MedlemRepository.Add(new Medlem(3, "Linn Aschberg", "073-73317331", "linn-aschberg@live.se"));
             #endregion Medlemmar
 
             #region Bokningar
 
-            BokningRepository.Add
-               (new Bokning(1, ExpiditRepository.FirstOrDefault(e => e.AnstNr == 11 || e.AnstNr == 22),MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2),
-                                BokRepository.FirstOrDefault(b => b.ISBN == 3435342),
-                                DateTime.Now, DateTime.Now + TimeSpan.FromDays(7), DateTime.Now + TimeSpan.FromDays(14)));
+            //BokningRepository.Add
+            //   (new Bokning(99, ExpiditRepository.FirstOrDefault(e => e.AnstNr == 11 || e.AnstNr == 22),MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2),
+            //                    BokRepository.FirstOrDefault(b => b.ISBN == 3435342),
+            //                    DateTime.Now, DateTime.Now + TimeSpan.FromDays(7), DateTime.Now + TimeSpan.FromDays(14)));
 
-            MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2).bokad =
-                BokningRepository.FirstOrDefault(b => true);
+            //MedlemRepository.FirstOrDefault(m => m.MedlemsNr == 2).bokad =
+            //    BokningRepository.FirstOrDefault(b => true);
 
             #endregion
         }

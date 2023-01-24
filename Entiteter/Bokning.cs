@@ -8,7 +8,7 @@ namespace Entiteter
 {
     public class Bokning
     {
-        public int BokningsNr { get; set; }
+        public int BokningsNr { get; set; } = - 1;
 
         public Expidit Expidit;
 
@@ -19,11 +19,11 @@ namespace Entiteter
         public DateTime FaktisktUtTid { get; set; }
         public DateTime ÅterTid { get; set; }
 
-        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
+        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid)
         {
-            BokningsNr = bokningsNr++;
-            Expidit = expidit;
+            BokningsNr = bokningsNr;
             Medlem = medlem;
+            Expidit = expidit;
             BokadeBöcker = new List<Bok>();
             UtTid = utTid;
             FaktisktUtTid = faktiskUtTid;
