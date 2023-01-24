@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entiteter.Interface;
 
 namespace Entiteter
 {
-    public class Bok
+    public class Bok : IBok
     {
         public string Titel { get; set; }
         public int ISBN { get; set; }
@@ -25,5 +26,10 @@ namespace Entiteter
         {
             throw new NotImplementedException();
         }
+
+        public void Tillgänglig() 
+        {Status = true;}
+        public void Bokad()
+        { Status = false;}
     }
 }

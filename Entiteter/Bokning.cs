@@ -19,14 +19,14 @@ namespace Entiteter
         public DateTime FaktisktUtTid { get; set; }
         public DateTime ÅterTid { get; set; }
 
-        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
+        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime faktiskUtTid, DateTime utTid, DateTime återTid)
         {
             BokningsNr = bokningsNr++;
             Expidit = expidit;
             Medlem = medlem;
             BokadeBöcker = new List<Bok>();
-            UtTid = utTid;
             FaktisktUtTid = faktiskUtTid;
+            UtTid = utTid;          
             ÅterTid = återTid;
         }
        

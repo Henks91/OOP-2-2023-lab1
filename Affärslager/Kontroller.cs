@@ -40,21 +40,44 @@ namespace Affärslager
             return böcker;
         }
 
-        public void SkapaBokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
+        /*public void SkapaBokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime faktiskUtTid, DateTime återTid)
         {
             Bokning bokning = new Bokning(bokningsNr, expidit, medlem, utTid, faktiskUtTid, återTid);
             unitOfWork.BokningRepository.Add(bokning);
-        }
+        }*/
 
-        public Bokning BokaBok()
+        public Bokning Bokning1(Bok bok, Medlem medlem, List<Bok> böcker)
         {
-            b.Status = false;
-            Bokning bo = new Bokning();
-            unitOfWork.BokningRepository.Add(bo);
-            LoggedIn.Reserved = r;
+            
+           
+
+            Random rnd = new Random(); //skapar möjligheten att lägga ett randomnummer
+            int bokningsNr = rnd.Next(1,9999); //lägger till ett randomnummer
+            Bokning bokning = new Bokning(bokningsNr,Autentisering,medlem,böcker, DateTime.Now, DateTime.Now.AddDays(+7), DateTime.Now.AddDays(+14));
+            unitOfWork.BokningRepository.Add(bokning);
+
+            foreach (Bok b in böcker)
+            {
+                bok.Bokad();
+            }
+
+            unitOfWork.Save();
+            return bokning;
+        }
+        public Bokning Boka(Expidit autentisering, Medlem medlem, List<Bok> böckerSomSkaBokas )
+        {
+            int bokningsNr = 0;
+            Bokning bokning = new Bokning(bokningsNr,Autentisering,medlem, böckerSomSkaBokas, DateTime.Now, DateTime.Now.AddDays(+7), DateTime.Now.AddDays(+14));
+            unitOfWork.BokningRepository.Add(bokning);
+
+            foreach (Bok bok in böckerSomSkaBokas)
+            {
+                bok.Bokad();
+            }
+            return bokning;
             unitOfWork.Save();
 
-            return r;
+            
         }
 
 

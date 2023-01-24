@@ -11,19 +11,12 @@ namespace Presentationslager
         // Kolla patriks kod för rumsbokning - Sax
 
 
-        static void Main(string[] args)
-        {
-            new Program().Main();
-        }
+        static void Main(string[] args) { new Program().Main(); }
 
-        private Program()
-        {
-            kontroller = new Kontroller();
-        }
+        private Program(){ kontroller = new Kontroller(); }
 
         private void Main()
         {
-
             Console.WriteLine("Inloggning för Expiditering");
             while (true)
             {
@@ -107,7 +100,7 @@ namespace Presentationslager
                     case 1:
                         //Console.WriteLine("Ange från vilket datum du vill låna en bok: ");
                         //DateTime val = Console.ReadLine();
-                   
+                        
                         IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
                         int i = 1;
                         foreach (Bok b in tillgänglig)
@@ -120,9 +113,34 @@ namespace Presentationslager
                         Console.WriteLine("Vad är ditt medlemsnummer? ");
                         int medlemsnr = int.Parse(Console.ReadLine());
                         Console.WriteLine("Från vilket datum vill du hyra böcker: ");
+                        DateTime dateTime = DateTime.Parse(Console.ReadLine());
+                        
+                        Console.WriteLine("Fyll i vilket nummret på boken du vill låna: ");
+                        string noToParse = "";
+                        int no;                        
+                        do
+                        {
+                            if (!int.TryParse(noToParse, out no) || !(0 < no && no <= tillgänglig.Count))
+                            {
+                                Console.WriteLine("skriv in bokens ISBN-nummer: ");
+                                noToParse = Console.ReadLine();
+                                Bokning böckerSomSkaBokas = new 
+                                Console.WriteLine("Skriv en 0:a om du inte vill boka fler böcker:");
+                            }
+                            
+                        } while (true);
+                        while (!int.TryParse(noToParse, out no) || !(0 < no && no <= tillgänglig.Count))
+                        {
+                            Console.WriteLine("skriv in bokens ISBN-nummer: ");
+                            noToParse = Console.ReadLine();
+                        }
+                        Bokning bokning = kontroller.Bokning1(tillgänglig[no - 1],medlemsnr,); // Todo hur ska vi få in en lista här ? Möjligen i operation över
+                        Write(bokning);
+
+                        
 
 
-                        kontroller.SkapaBokning(kontroller.Autentisering.AnstNr, medlemsnr, );
+
                         break;
                     case 2:
 
@@ -144,6 +162,11 @@ namespace Presentationslager
         private void Write(Bok b)
         {
             Console.WriteLine(b.Titel, b.ISBN);
+        }
+        private void Write(Bokning b)
+        {
+            Console.WriteLine(" bok/böcker: {0} bokad från {1} till {2} av {3}.",
+                                b.Böcker, b.UtTid,b.ÅterTid,b.Medlem);
         }
 
         private Kontroller kontroller;

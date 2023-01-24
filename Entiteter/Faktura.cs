@@ -8,14 +8,14 @@ namespace Entiteter
 {
     public class Faktura
     {
-        public Bokning BokningsNr;
+        public Bokning Bokning;
 
         public Expidit AnstNr;
         public DateTime FaktiskÅterTid { get; set; }
         public int TotalPris { get; set; }
-        public Faktura(Bokning bokningsNr, Expidit anstNr, DateTime faktiskÅterTid, int totalPris)
+        public Faktura(Bokning bokning, Expidit anstNr, DateTime faktiskÅterTid, int totalPris)
         {
-            BokningsNr = bokningsNr;
+            Bokning = bokning;
             AnstNr = anstNr;
             FaktiskÅterTid = faktiskÅterTid;
             TotalPris = totalPris;
