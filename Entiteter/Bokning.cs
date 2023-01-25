@@ -12,14 +12,14 @@ namespace Entiteter
         private int bokningsNr = 0;
         public int BokningsNr { get { return bokningsNr; } }
 
-        public Expidit Expidit; //fundera ´kring public här
+        public Expidit Expidit { get; private set; } //fundera ´kring public här
 
-        public Medlem Medlem;
+        public Medlem Medlem { get; private set; }
 
         public IList<Bok> BokadeBöcker;
-        public DateTime UtTid { get; set; }
-        public DateTime FaktisktUtTid { get; set; } 
-        public DateTime ÅterTid { get; set; }
+        public DateTime UtTid { get; private set; }
+        public DateTime FaktisktUtTid { get; private set; } 
+        public DateTime ÅterTid { get; private set; }
 
         public Bokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker)
         {

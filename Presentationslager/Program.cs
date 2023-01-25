@@ -25,7 +25,6 @@ namespace Presentationslager
 
         private void Main()
         {
-
             Console.WriteLine("Inloggning för Expiditering");
             while (true)
             {
@@ -64,10 +63,6 @@ namespace Presentationslager
             return kontroller.Inloggning(id, password);
         }
 
-
-
-
-
         static uint inmatninguINT(string inmatningssträng) //
         {
             Console.Write(inmatningssträng);
@@ -82,13 +77,9 @@ namespace Presentationslager
 
         private void Menyn()
         {
-
-
             bool stängNer = false; // Variabel för att avsluta programmet vid specifikt menyval
             while (!stängNer)
             {
-
-
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("EXPIDITIONENS BOKHANTERINGS MENY");
                 Console.WriteLine("1: Skapa Bokning");
@@ -132,7 +123,6 @@ namespace Presentationslager
                             }
                             DateTime faktiskTid = default(DateTime);
 
-
                             Console.WriteLine("Ange medlemsnummer: ");
                             
                             int medlemsnr = int.Parse(Console.ReadLine());
@@ -151,8 +141,7 @@ namespace Presentationslager
                             bool avslut = false;
                             //List<Bok> ProvBok = new List<Bok>();
                             while (!avslut)
-                            {
-                                
+                            {                                
                                 Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
                                 string boknamn = Console.ReadLine();
                                 
@@ -179,10 +168,9 @@ namespace Presentationslager
                             //Console.WriteLine($"Ditt återlämningsdatum är: {tillbaka}");
                             //kontroller.BokTillBokning(ProvBok);
                             
+                            
 
-                            Expidit ee = kontroller.Autentisering;
-
-                            Bokning bc= kontroller.SkapaBokning(ee, medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Bokning bc= kontroller.SkapaBokning(medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
@@ -224,11 +212,9 @@ namespace Presentationslager
 
         private void BokningUtskrift(Bokning bo) // snabb while loop, för undvika skapa string variabel + konvertera int variabler till string i foreach
         {
-
             bool x = true;
             while (x)
             {
-
                 Console.WriteLine($"Bokningsnummer: {bo.BokningsNr}" + " \n" +
                             $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
                             $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +
@@ -239,7 +225,6 @@ namespace Presentationslager
                 {
                     Console.WriteLine(b.Titel, b.ISBN);
                 }
-
                 x = false;
             }
         }
