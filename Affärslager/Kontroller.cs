@@ -65,6 +65,7 @@ namespace Affärslager
                 foreach (Bok b in BokningBöcker)
                 {
                     BokningBöcker.Add(bokk);
+                    b.Bokad(); // ändrar bokens status till bokad
                 }
             }
             return BokningBöcker;
