@@ -16,7 +16,7 @@ namespace Entiteter
 
         public IList<Bok> BokadeBöcker;
         public DateTime UtTid { get; set; }
-        public DateTime FaktisktUtTid { get; set; }
+        public DateTime FaktisktUtTid { get; set; } 
         public DateTime ÅterTid { get; set; }
 
         public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker)

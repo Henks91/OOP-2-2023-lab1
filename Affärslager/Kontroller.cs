@@ -42,10 +42,12 @@ namespace Affärslager
             return böcker;
         }
 
-        public void SkapaBokning(int boknr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker)
+        public Bokning SkapaBokning(int boknr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker)
         {
             Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
             unitOfWork.BokningRepository.Add(bokning);
+            return bokning;
+            
         }
 
         public Medlem Hittamedlem(int medlemNr)
@@ -67,13 +69,49 @@ namespace Affärslager
                     bokadeBöcker.Add(b);
                     b.Bokad();
                 }           
-            //return bokadeBöcker;
+            //return bokadeBöcker;           
+        }
+
+        //public List<Sal> HämtaTillgängligaSalar(DateTime från, DateTime till)
+        //{
+        //    List<Sal> otillgängligaGrupprum = new List<Sal>();
+
+        //    foreach (Schema schema in schema)
+        //    {
+        //        foreach (SchemaRad rad in schema.Schemarader)
+        //        {
+        //            if ((från >= rad.Från && från < rad.Till) || (till > rad.Från && till <= rad.Till))
+        //                otillgängligaGrupprum.Add(rad.Sal);
+        //        }
+        //    }
+
+        //    return salar.Where(rum => !otillgängligaGrupprum.Contains(rum)).ToList();
+        //}
+
+        public List<Bokning> TidsKontroll(DateTime från, DateTime till)
+        {
+            List<Bokning> BokadeBöcker = new List<Bokning>();
+            if (Bokning b in unitOfWork.BokningRepository.Find(från => b.ÅterTid && till)
+            {
+
+            }  
+            return unitOfWork.BokningRepository.
+        }
+        public void Jämförtid(DateTime Tid, Bokning bokn)
+        {
+            IEnumerable<Bokning> b = unitOfWork.BokningRepository.Find(b => b.ÅterTid > Tid);
+            if (bokn.ÅterTid > Tid)
+            {
+
+            }
         }
 
         public Bok HittaBok(string boktitel)
         {
             Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
-            if (bok.Titel != null)
+
+            //Bokning b = unitOfWork.BokningRepository.Find(b => b.ÅterTid < tid);
+            if (bok.Titel != null && bok.Status == true)
             {
                 bok.Titel = boktitel;
             }
