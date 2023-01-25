@@ -64,7 +64,8 @@ namespace Affärslager
 
                 foreach (Bok b in boks)
                 {
-                    bokadeBöcker.Add(b);                   
+                    bokadeBöcker.Add(b);
+                    b.Bokad();
                 }           
             //return bokadeBöcker;
         }
