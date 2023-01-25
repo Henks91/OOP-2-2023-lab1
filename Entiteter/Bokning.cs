@@ -14,17 +14,17 @@ namespace Entiteter
 
         public Medlem Medlem;
 
-        public List<Bok> BokadeBöcker;
+        public IList<Bok> BokadeBöcker;
         public DateTime UtTid { get; set; }
         public DateTime FaktisktUtTid { get; set; }
         public DateTime ÅterTid { get; set; }
 
-        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid)
+        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> böcker)
         {
             BokningsNr = bokningsNr;
             Medlem = medlem;
             Expidit = expidit;
-            BokadeBöcker = new List<Bok>();
+            BokadeBöcker = böcker;
             UtTid = utTid;
             FaktisktUtTid = faktiskUtTid;
             ÅterTid = återTid;

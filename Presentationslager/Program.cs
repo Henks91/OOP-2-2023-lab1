@@ -146,12 +146,12 @@ namespace Presentationslager
                             if (boknamn != string.Empty)
                             {
                                 Console.WriteLine($"{boknamn} har lagts till i bokning");
-
+                                kontroller.BokTillBokning(boknamn);
                             }
 
                             Expidit ee = kontroller.Autentisering;
 
-                                kontroller.SkapaBokning(uniktBokNR++, ee, medlem, utTiden, återTiden, faktiskTid); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                                kontroller.SkapaBokning(uniktBokNR++, ee, medlem, utTiden, återTiden, faktiskTid, bokadeBöcker); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             
                         }
                         break;

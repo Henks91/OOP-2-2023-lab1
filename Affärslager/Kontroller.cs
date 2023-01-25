@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -41,9 +42,9 @@ namespace Affärslager
             return böcker;
         }
 
-        public void SkapaBokning(int boknr, Expidit expidit, Medlem medlem  , DateTime utTid, DateTime återTid, DateTime faktiskUtTid)
+        public void SkapaBokning(int boknr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker)
         {
-            Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid);
+            Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
             unitOfWork.BokningRepository.Add(bokning);
         }
 
@@ -56,10 +57,21 @@ namespace Affärslager
             }
             return medlem;
         }
+        public IList<Bok> BokTillBokning(string boktitel)
+        {
+            List<Bok> BokningBöcker = new List<Bok>();
+            Bok bokk = unitOfWork.BokRepository.FirstOrDefault(b => b.Titel == boktitel);
+            foreach (Bok b in BokningBöcker)
+            {
+                BokningBöcker.Add(bokk);
+                unitOfWork.BokRepository.Add(bokk);
+            }
+            return BokningBöcker;
+        }
 
         //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
         //{
-            
+
         //    Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(db => db.BokningsNr == bobo.BokningsNr || db.Medlem.MedlemsNr == bobo.Medlem.MedlemsNr);
 
         //    if (dinBokning != null && dinBokning.BokningsNr == bobo.BokningsNr)
@@ -78,6 +90,7 @@ namespace Affärslager
 
         public Bokning VisaBokning(int bob) // accepterade förlusten efter 2h - Denna funkar.
         {
+
             IList<Bokning> boknings = new List<Bokning>(); // denna kan möjligtvis ändras från IList till IEnumerable
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bob || dinBokning.Medlem.MedlemsNr == bob);
             boknings.Where(db => db.BokningsNr == bob || db.Medlem.MedlemsNr == bob); 
