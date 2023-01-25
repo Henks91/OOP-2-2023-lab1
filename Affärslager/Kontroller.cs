@@ -41,28 +41,6 @@ namespace Affärslager
             }
             return böcker;
         }
-
-        public void SkapaBokning(int boknr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker)
-        {
-            Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
-            unitOfWork.BokningRepository.Add(bokning);
-        }*/
-
-        public Bokning Bokning1(Bok bok, Medlem medlem, List<Bok> böcker)
-        {
-            
-           
-
-            Random rnd = new Random(); //skapar möjligheten att lägga ett randomnummer
-            int bokningsNr = rnd.Next(1,9999); //lägger till ett randomnummer
-            Bokning bokning = new Bokning(bokningsNr,Autentisering,medlem,böcker, DateTime.Now, DateTime.Now.AddDays(+7), DateTime.Now.AddDays(+14));
-            unitOfWork.BokningRepository.Add(bokning);
-
-            foreach (Bok b in böcker)
-            {
-                bok.Bokad();
-            }
-
         public Medlem Hittamedlem(int medlemNr)
         {
             Medlem medlem = unitOfWork.MedlemRepository.FirstOrDefault(e => e.MedlemsNr == medlemNr);
