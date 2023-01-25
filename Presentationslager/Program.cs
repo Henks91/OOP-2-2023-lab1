@@ -17,7 +17,7 @@ namespace Presentationslager
         {
             new Program().Main();
         }
-
+        
         private Program()
         {
             kontroller = new Kontroller();
@@ -77,6 +77,8 @@ namespace Presentationslager
 
         private void Menyn()
         {
+            DateTime faktiskUtTid = default(DateTime);
+            DateTime tillbaka = default(DateTime);
             bool stängNer = false; // Variabel för att avsluta programmet vid specifikt menyval
             while (!stängNer)
             {
@@ -101,18 +103,16 @@ namespace Presentationslager
                         string input = Console.ReadLine();
                         if (input != "")
                         {
-                            DateTime från = DateTime.MinValue;
+                            DateTime från; // = DateTime.MinValue;
                             DateTime.TryParse(input, out från);
                             while (från == DateTime.MinValue)
                             {
                                 Console.Write($"Försök igen, format (YYYY-MM-DD): ");
                                 DateTime.TryParse(Console.ReadLine(), out från);
                             }
-                            DateTime tillbaka = från.AddDays(+14);
-                            Console.WriteLine($"Ditt återlämningsdatum är: {tillbaka}");
-                            DateTime faktiskTid = default(DateTime);
-                            List<Bok> ProvBok = new List<Bok>();
-                            kontroller.BokTillBokning(ProvBok);
+                            
+                         
+                            //DateTime faktiskUtTid = default(DateTime);  placeras utanför while-loopen ovan på rad 80
 
                             Console.WriteLine("Ange medlemsnummer: ");
                             
@@ -130,6 +130,7 @@ namespace Presentationslager
                                 Console.Write("{0}. ", i++);
                                 BokUtskrift(b);
                             }
+                            List<Bok> ProvBok = new List<Bok>();
                             bool avslut = false;
                             while (!avslut)
                             {                                
@@ -141,39 +142,45 @@ namespace Presentationslager
                                 if (b != null)
                                 {                                    
                                     Console.WriteLine($"{b.Titel} har lagts till i bokning");
-                                    ProvBok.Add(b);                                 
+                                    ProvBok.Add(b);
+                                    
 
                                 }
                                 Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
                                 string val = Console.ReadLine().ToUpper();
                                 if (val == "N")
-                                {
-                                   
-                                    avslut = true;
-                                    
+                                {                                  
+                                    avslut = true;                                   
                                 }
                             }
-
-
-
-                            
-
-                            Bokning bc= kontroller.SkapaBokning(medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            kontroller.BokTillBokning(ProvBok);
+                            Bokning bc= kontroller.SkapaBokning(medlem, från , tillbaka, faktiskUtTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
 
                     case 2:
+                        
                         Console.Clear();
-                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
-                        int svar = int.Parse(Console.ReadLine());
-                        Bokning boknn = kontroller.VisaBokning(svar);
-                        if (svar != null)
+                        Console.WriteLine("Vill du hämta ut dina böcker? \nSkriv 'J' för 'JA' och 'N' för 'NEJ':");
+                        string val1 = Console.ReadLine().ToUpper();
+                        if (val1 == "J")
                         {
-                            Console.WriteLine("** Din bokning **");
+                            Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
+                            int svar = int.Parse(Console.ReadLine());
+                            Bokning bokning = kontroller.VisaBokning(svar);
+                            if (svar != null)
+                            {
+                                Console.WriteLine("** Din bokning **");
 
-                                BokningUtskrift(boknn);
+                                BokningUtskrift(bokning);
+                                bokning.Upphämtad();
+                                bokning.FaktisktUtTid = DateTime.Now;
+                                bokning.ÅterTid = DateTime.Now.AddDays(+14);
+                                Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);
+                            }
                         }
+                                                
 
                         break;
 
@@ -203,11 +210,10 @@ namespace Presentationslager
             bool x = true;
             while (x)
             {
-                Console.WriteLine($"Bokningsnummer: {bo.BokningsNr}" + " \n" +
+                Console.WriteLine($" Bokningsnummer: {bo.BokningsNr}" + " \n" +
                             $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
                             $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +
-                            $" Planerat uthyrningsdatum: {bo.UtTid}" + " \n" +
-                            $" Planerat återlämningsdatum {bo.ÅterTid}" + " \n");
+                            $" Planerat uthyrningsdatum: {bo.UtTid}" + " ");
                             //$" Aktuellt återlämningsdatum {bo.FaktisktUtTid}"); Ska vara med vid återlämning av böcker
                 foreach (Bok b in bo.BokadeBöcker)
                 {
@@ -216,9 +222,6 @@ namespace Presentationslager
                 x = false;
             }
         }
-
-
-
         private Kontroller kontroller;
     }
 }

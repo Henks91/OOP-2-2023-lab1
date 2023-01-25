@@ -35,7 +35,7 @@ namespace Affärslager
         public IList<Bok> HämtaTillgängligaBöcker()
         {
             List<Bok> böcker = new List<Bok>();
-            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.Status == true))
+            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true))
             {
                 böcker.Add(b);
             }
@@ -44,7 +44,7 @@ namespace Affärslager
 
         public Bokning SkapaBokning(Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
         {
-            Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
+            Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
             return bokning;
             
@@ -72,41 +72,6 @@ namespace Affärslager
             //return bokadeBöcker;           
         }
 
-        //public List<Sal> HämtaTillgängligaSalar(DateTime från, DateTime till)
-        //{
-        //    List<Sal> otillgängligaGrupprum = new List<Sal>();
-
-        //    foreach (Schema schema in schema)
-        //    {
-        //        foreach (SchemaRad rad in schema.Schemarader)
-        //        {
-        //            if ((från >= rad.Från && från < rad.Till) || (till > rad.Från && till <= rad.Till))
-        //                otillgängligaGrupprum.Add(rad.Sal);
-        //        }
-        //    }
-
-        //    return salar.Where(rum => !otillgängligaGrupprum.Contains(rum)).ToList();
-        //}
-
-        //public List<Bokning> TidsKontroll(DateTime från, DateTime till)
-        //{
-        //    List<Bokning> BokadeBöcker = new List<Bokning>();
-        //    if (Bokning b in unitOfWork.BokningRepository.Find(från => b.ÅterTid && till)
-        //    {
-
-        //    }  
-        //    return unitOfWork.BokningRepository.
-        //}
-        //public void Jämförtid(DateTime Tid, Bokning bokn)
-        //{
-        //    IEnumerable<Bokning> b = unitOfWork.BokningRepository.Find(b => b.ÅterTid > Tid);
-        //    if (bokn.ÅterTid > Tid)
-        //    {
-
-        //    }
-        //}
-
-
         public Bok HittaBok(string boktitel)
         {
             Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
@@ -117,26 +82,28 @@ namespace Affärslager
             return bok;
         }
 
-            //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
-            //{
-
-            //    Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(db => db.BokningsNr == bobo.BokningsNr || db.Medlem.MedlemsNr == bobo.Medlem.MedlemsNr);
-
-            //    if (dinBokning != null && dinBokning.BokningsNr == bobo.BokningsNr)
-            //    {
-            //        bobo.BokningsNr = dinBokning.BokningsNr;
-
-            //    }
-            //    else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bobo.BokningsNr)
-            //    {
-            //        bobo.Medlem.MedlemsNr = dinBokning.Medlem.MedlemsNr;
-            //    }
-            //    return dinBokning as IList<Bokning>; // waaw
-
-            //}
 
 
-            public Bokning VisaBokning(int bob) // accepterade förlusten efter 2h - Denna funkar.
+        //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
+        //{
+
+        //    Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(db => db.BokningsNr == bobo.BokningsNr || db.Medlem.MedlemsNr == bobo.Medlem.MedlemsNr);
+
+        //    if (dinBokning != null && dinBokning.BokningsNr == bobo.BokningsNr)
+        //    {
+        //        bobo.BokningsNr = dinBokning.BokningsNr;
+
+        //    }
+        //    else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bobo.BokningsNr)
+        //    {
+        //        bobo.Medlem.MedlemsNr = dinBokning.Medlem.MedlemsNr;
+        //    }
+        //    return dinBokning as IList<Bokning>; // waaw
+
+        //}
+
+
+        public Bokning VisaBokning(int bob) // accepterade förlusten efter 2h - Denna funkar.
         {
 
             IList<Bokning> boknings = new List<Bokning>(); // denna kan möjligtvis ändras från IList till IEnumerable

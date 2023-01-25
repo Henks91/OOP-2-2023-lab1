@@ -12,24 +12,25 @@ namespace Entiteter
         public string Titel { get; set; }
         public int ISBN { get; set; }
 
-        public bool Status { get; set; }
+        public bool ÄrTillgänglig { get; set; }
+
        
 
         public Bok(string titel, int isbn, bool status)
         {
             Titel = titel;
             ISBN = isbn;
-            Status = status;
+            ÄrTillgänglig = status;
         }
 
         public void Tillgänglig()
         {
-            Status = true;
+            ÄrTillgänglig = true;
         }
         public void Bokad()
         {
-            Status = false;
+            ÄrTillgänglig = false;
         }
-
+       
     }
 }
