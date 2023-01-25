@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entiteter.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,14 +23,14 @@ namespace Entiteter
             Status = status;
         }
 
-        public static Bok Find(Predicate<Bok> hittaböcker)
+        public void Tillgänglig()
         {
-            throw new NotImplementedException();
+            Status = true;
+        }
+        public void Bokad()
+        {
+            Status = false;
         }
 
-        public void Tillgänglig() 
-        {Status = true;}
-        public void Bokad()
-        { Status = false;}
     }
 }
