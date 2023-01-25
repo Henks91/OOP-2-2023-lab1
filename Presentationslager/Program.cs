@@ -130,6 +130,7 @@ namespace Presentationslager
                             int medlemsnr = int.Parse(Console.ReadLine());
                             Medlem medlem = kontroller.Hittamedlem(medlemsnr);
 
+                            Console.Clear();
 
                             IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
                             int i = 1;
@@ -139,25 +140,36 @@ namespace Presentationslager
                                 Console.Write("{0}. ", i++);
                                 BokUtskrift(b);
                             }
-                            
-                            Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
-                            string boknamn = Console.ReadLine();
-                            
-                            if (boknamn != string.Empty)
+                            bool avslut = false;
+                            List<Bok> ProvBok = new List<Bok>();
+                            while (!avslut)
                             {
-                                Console.WriteLine($"{boknamn} har lagts till i bokning");
-
-                                foreach (Bok b in boknamn)
-                                {
-                                    IList<Bok> bokadeBöcker = kontroller.BokTillBokning(bokadeBöcker);
-                                } 
                                 
+                                Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
+                                string boknamn = Console.ReadLine();
+                                
+                                Bok b = kontroller.HittaBok(boknamn);
+                                
+                                if (b != null)
+                                {                                    
+                                    Console.WriteLine($"{b.Titel} har lagts till i bokning");
+                                    ProvBok.Add(b);                                 
+
+                                }
+                                Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
+                                string val = Console.ReadLine().ToUpper();
+                                if (val == "N")
+                                {
+                                    avslut = true;
+                                    
+                                }
                             }
+                            kontroller.BokTillBokning(ProvBok);
                             
 
                             Expidit ee = kontroller.Autentisering;
 
-                                kontroller.SkapaBokning(uniktBokNR++, ee, medlem, utTiden, återTiden, faktiskTid, bokadeBöcker); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                                kontroller.SkapaBokning(uniktBokNR++, ee, medlem, utTiden, återTiden, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             
                         }
                         break;
@@ -198,6 +210,7 @@ namespace Presentationslager
 
         private void BokningUtskrift(Bokning bo) // snabb while loop, för undvika skapa string variabel + konvertera int variabler till string i foreach
         {
+
             bool x = true;
             while (x)
             {
@@ -207,10 +220,13 @@ namespace Presentationslager
                             $" Planerat uthyrningsdatum: {bo.UtTid}" + " " +
                             $" Planerat återlämningsdatum {bo.ÅterTid}" + " " +
                             $" Aktuellt återlämningsdatum {bo.FaktisktUtTid}");
+                foreach (Bok b in bo.BokadeBöcker)
+                {
+                    Console.WriteLine(b.Titel, b.ISBN);
+                }
+
                 x = false;
             }
-
-
         }
 
 
