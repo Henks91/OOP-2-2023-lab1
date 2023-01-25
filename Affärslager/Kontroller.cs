@@ -42,9 +42,9 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(int boknr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker)
+        public Bokning SkapaBokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
         {
-            Bokning bokning = new Bokning(boknr, expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
+            Bokning bokning = new Bokning(expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
             unitOfWork.BokningRepository.Add(bokning);
             return bokning;
             
@@ -88,23 +88,23 @@ namespace Affärslager
         //    return salar.Where(rum => !otillgängligaGrupprum.Contains(rum)).ToList();
         //}
 
-        public List<Bokning> TidsKontroll(DateTime från, DateTime till)
-        {
-            List<Bokning> BokadeBöcker = new List<Bokning>();
-            if (Bokning b in unitOfWork.BokningRepository.Find(från => b.ÅterTid && till)
-            {
+        //public List<Bokning> TidsKontroll(DateTime från, DateTime till)
+        //{
+        //    List<Bokning> BokadeBöcker = new List<Bokning>();
+        //    if (Bokning b in unitOfWork.BokningRepository.Find(från => b.ÅterTid && till)
+        //    {
 
-            }  
-            return unitOfWork.BokningRepository.
-        }
-        public void Jämförtid(DateTime Tid, Bokning bokn)
-        {
-            IEnumerable<Bokning> b = unitOfWork.BokningRepository.Find(b => b.ÅterTid > Tid);
-            if (bokn.ÅterTid > Tid)
-            {
+        //    }  
+        //    return unitOfWork.BokningRepository.
+        //}
+        //public void Jämförtid(DateTime Tid, Bokning bokn)
+        //{
+        //    IEnumerable<Bokning> b = unitOfWork.BokningRepository.Find(b => b.ÅterTid > Tid);
+        //    if (bokn.ÅterTid > Tid)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public Bok HittaBok(string boktitel)
         {
