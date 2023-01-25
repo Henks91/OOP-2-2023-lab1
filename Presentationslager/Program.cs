@@ -207,6 +207,11 @@ namespace Presentationslager
                             $" Planerat uthyrningsdatum: {bo.UtTid}" + " " +
                             $" Planerat återlämningsdatum {bo.ÅterTid}" + " " +
                             $" Aktuellt återlämningsdatum {bo.FaktisktUtTid}");
+                foreach (Bok b in bo.BokadeBöcker)
+                {
+                    Console.WriteLine(b.Titel, b.ISBN);
+                }
+                            
                 x = false;
             }
 
