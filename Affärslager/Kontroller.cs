@@ -57,18 +57,26 @@ namespace Affärslager
             }
             return medlem;
         }
-        public IList<Bok> BokTillBokning(Bok bok)
+
+        public void BokTillBokning(List<Bok> boks)
         {
-            List<Bok> BokningBöcker = new List<Bok>();
-            if (bokk != null)
-            {
-                foreach (Bok b in BokningBöcker)
+            IList<Bok> bokadeBöcker = new List<Bok>();
+
+                foreach (Bok b in boks)
                 {
-                    BokningBöcker.Add(bokk);
-                    b.Bokad(); // ändrar bokens status till bokad
-                }
+                    bokadeBöcker.Add(b);                   
+                }           
+            //return bokadeBöcker;
+        }
+
+        public Bok HittaBok(string boktitel)
+        {
+            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
+            if (bok.Titel != null)
+            {
+                bok.Titel = boktitel;
             }
-            return BokningBöcker;
+            return bok;
         }
 
         public Bok HittaBok(string boktitel)
