@@ -139,15 +139,21 @@ namespace Presentationslager
                                 Console.Write("{0}. ", i++);
                                 BokUtskrift(b);
                             }
-
+                            
                             Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
                             string boknamn = Console.ReadLine();
-
+                            
                             if (boknamn != string.Empty)
                             {
                                 Console.WriteLine($"{boknamn} har lagts till i bokning");
-                                kontroller.BokTillBokning(boknamn);
+
+                                foreach (Bok b in boknamn)
+                                {
+                                    IList<Bok> bokadeBöcker = kontroller.BokTillBokning(bokadeBöcker);
+                                } 
+                                
                             }
+                            
 
                             Expidit ee = kontroller.Autentisering;
 
