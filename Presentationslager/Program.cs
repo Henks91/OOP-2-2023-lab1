@@ -99,11 +99,13 @@ namespace Presentationslager
                 Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("4: Avsluta programmet");
-                
+                Console.ForegroundColor = ConsoleColor.White;
 
                 switch (inmatninguINT("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
                 {
                     case 1:
+
+                        Console.Clear();
                         Console.Write("\nFrån yyyy-mm-dd: ");
                         string input = Console.ReadLine();
                         if (input != "")
@@ -122,7 +124,7 @@ namespace Presentationslager
                                 Console.Write($"Till (YYYY-MM-DD hh:mm): ");
                                 DateTime.TryParse(Console.ReadLine(), out återTiden);
                             }
-                            DateTime faktiskTid = DateTime.Now;
+                            DateTime faktiskTid = default(DateTime);
 
 
                             Console.WriteLine("Ange medlemsnummer: ");
@@ -160,22 +162,28 @@ namespace Presentationslager
                                 string val = Console.ReadLine().ToUpper();
                                 if (val == "N")
                                 {
+                                   
                                     avslut = true;
                                     
                                 }
                             }
+                            Console.WriteLine("Från vilket datum vill du boka boken/böckerna: ");
+                            DateTime från = DateTime.Parse(Console.ReadLine());
+                            DateTime tillbaka = från.AddDays(+14);
+                            Console.WriteLine($"Ditt återlämningsdatum är: {0}", tillbaka);
                             kontroller.BokTillBokning(ProvBok);
                             
 
                             Expidit ee = kontroller.Autentisering;
 
-                                kontroller.SkapaBokning(uniktBokNR++, ee, medlem, utTiden, återTiden, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
-                            
+                            Bokning bc= kontroller.SkapaBokning(uniktBokNR++, ee, medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Console.WriteLine($"Din bokning har: {0} som bokningsnummer.",bc.BokningsNr);
                         }
                         break;
 
                     case 2:
-                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 2355
+                        Console.Clear();
+                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar = int.Parse(Console.ReadLine());
                         Bokning boknn = kontroller.VisaBokning(svar);
                         if (svar != null)
@@ -214,12 +222,13 @@ namespace Presentationslager
             bool x = true;
             while (x)
             {
-                Console.WriteLine($"Bokningsnummer: {bo.BokningsNr}" + " " +
-                            $" Bokningshanterar: {bo.Expidit.AnstNr} " + " " +
-                            $"Medlemsnummer: {bo.Medlem.MedlemsNr}" + " " +
-                            $" Planerat uthyrningsdatum: {bo.UtTid}" + " " +
-                            $" Planerat återlämningsdatum {bo.ÅterTid}" + " " +
-                            $" Aktuellt återlämningsdatum {bo.FaktisktUtTid}");
+
+                Console.WriteLine($"Bokningsnummer: {bo.BokningsNr}" + " \n" +
+                            $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
+                            $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +
+                            $" Planerat uthyrningsdatum: {bo.UtTid}" + " \n" +
+                            $" Planerat återlämningsdatum {bo.ÅterTid}" + " \n");
+                            //$" Aktuellt återlämningsdatum {bo.FaktisktUtTid}"); Ska vara med vid återlämning av böcker
                 foreach (Bok b in bo.BokadeBöcker)
                 {
                     Console.WriteLine(b.Titel, b.ISBN);
