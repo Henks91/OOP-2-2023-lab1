@@ -42,9 +42,9 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
+        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
         {
-            Bokning bokning = new Bokning(expidit, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
+            Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker);
             unitOfWork.BokningRepository.Add(bokning);
             return bokning;
             
@@ -106,17 +106,6 @@ namespace Affärslager
         //    }
         //}
 
-        public Bok HittaBok(string boktitel)
-        {
-            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
-
-            //Bokning b = unitOfWork.BokningRepository.Find(b => b.ÅterTid < tid);
-            if (bok.Titel != null && bok.Status == true)
-            {
-                bok.Titel = boktitel;
-            }
-            return bok;
-        }
 
         public Bok HittaBok(string boktitel)
         {
@@ -126,6 +115,7 @@ namespace Affärslager
                 bok.Titel = boktitel;
             }
             return bok;
+        }
 
             //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
             //{

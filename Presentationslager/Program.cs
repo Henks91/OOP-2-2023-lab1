@@ -104,34 +104,24 @@ namespace Presentationslager
                 switch (inmatninguINT("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
                 {
                     case 1:
-                        List<Bok> ProvBok = new List<Bok>();
-                        Console.WriteLine("Från vilket datum vill du boka boken/böckerna: ");
-                        DateTime från = DateTime.Parse(Console.ReadLine());
-                        DateTime tillbaka = från.AddDays(+14);
-                        Console.WriteLine($"Ditt återlämningsdatum är: {tillbaka}");
-                        kontroller.BokTillBokning(ProvBok);
 
                         Console.Clear();
-                        Console.Write("\nFrån yyyy-mm-dd: ");
+                        Console.WriteLine("Från vilket datum vill du boka boken/böckerna: ");
                         string input = Console.ReadLine();
                         if (input != "")
                         {
-                            DateTime utTiden = DateTime.MinValue;
-                            DateTime.TryParse(input, out utTiden);
-                            while (utTiden == DateTime.MinValue)
+                            DateTime från = DateTime.MinValue;
+                            DateTime.TryParse(input, out från);
+                            while (från == DateTime.MinValue)
                             {
                                 Console.Write($"Försök igen, format (YYYY-MM-DD): ");
-                                DateTime.TryParse(Console.ReadLine(), out utTiden);
+                                DateTime.TryParse(Console.ReadLine(), out från);
                             }
-
-                            DateTime återTiden = DateTime.MinValue;
-                            while (återTiden == DateTime.MinValue)
-                            {
-                                Console.Write($"Till (YYYY-MM-DD hh:mm): ");
-                                DateTime.TryParse(Console.ReadLine(), out återTiden);
-                            }
+                            DateTime tillbaka = från.AddDays(+14);
+                            Console.WriteLine($"Ditt återlämningsdatum är: {tillbaka}");
                             DateTime faktiskTid = default(DateTime);
-
+                            List<Bok> ProvBok = new List<Bok>();
+                            kontroller.BokTillBokning(ProvBok);
 
                             Console.WriteLine("Ange medlemsnummer: ");
                             
@@ -142,6 +132,7 @@ namespace Presentationslager
 
                             IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
                             int i = 1;
+
                             Console.WriteLine("** Tillgängliga böcker **");
                             foreach (Bok b in tillgänglig)
                             {
@@ -149,7 +140,6 @@ namespace Presentationslager
                                 BokUtskrift(b);
                             }
                             bool avslut = false;
-                            //List<Bok> ProvBok = new List<Bok>();
                             while (!avslut)
                             {
                                 
@@ -173,16 +163,12 @@ namespace Presentationslager
                                     
                                 }
                             }
-                            //Console.WriteLine("Från vilket datum vill du boka boken/böckerna: ");
-                            //DateTime från = DateTime.Parse(Console.ReadLine());
-                            //DateTime tillbaka = från.AddDays(+14);
-                            //Console.WriteLine($"Ditt återlämningsdatum är: {tillbaka}");
-                            //kontroller.BokTillBokning(ProvBok);
+
+
+
                             
 
-                            Expidit ee = kontroller.Autentisering;
-
-                            Bokning bc= kontroller.SkapaBokning(ee, medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Bokning bc= kontroller.SkapaBokning(medlem, från , tillbaka, faktiskTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
