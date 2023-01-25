@@ -142,9 +142,7 @@ namespace Presentationslager
                                 if (b != null)
                                 {                                    
                                     Console.WriteLine($"{b.Titel} har lagts till i bokning");
-                                    ProvBok.Add(b);
-                                    
-
+                                    ProvBok.Add(b);                                   
                                 }
                                 Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
                                 string val = Console.ReadLine().ToUpper();
@@ -169,35 +167,37 @@ namespace Presentationslager
                             Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                             int svar = int.Parse(Console.ReadLine());
                             Bokning bokning = kontroller.VisaBokning(svar);
-                            if (svar != null)
-                            {
+                            
                                 Console.WriteLine("** Din bokning **");
-
                                 BokningUtskrift(bokning);
                                 bokning.Upphämtad();
                                 bokning.FaktisktUtTid = DateTime.Now;
                                 bokning.ÅterTid = DateTime.Now.AddDays(+14);
-                                Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);
-                            }
+                                Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);                           
                         }
                                                 
-
                         break;
 
                     case 3:
-
+                        Console.Clear();
+                        Console.WriteLine("Vill du lämna tillbaka dina böcker? \nSkriv 'J' för 'JA' och 'N' för 'NEJ':");
+                        string val2 = Console.ReadLine().ToUpper();
+                        if (val2 == "J")
+                        {
+                            Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
+                            int svar = int.Parse(Console.ReadLine());
+                        }
                         break;
 
                     case 4:
                         stängNer = true;
-
+                        
                         break;
                     default:
                         Console.WriteLine("Inkorrekt inmatning, välj ett av ovanstående alternativ"); //om användaren anger ett tal som inte finns som ett altetrnativ kommer ett felmeddelande presenteras.
                         Console.ReadLine();
                         break;
                 }
-
             }
         }
         private void BokUtskrift(Bok b)
