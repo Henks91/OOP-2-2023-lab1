@@ -50,6 +50,7 @@ namespace Affärslager
             DateTime återTid = default(DateTime);
             Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
+            unitOfWork.Save();
             return bokning;            
         }
 
@@ -72,6 +73,7 @@ namespace Affärslager
                 faktura.TotalPris = 0;
             }
             unitOfWork.FakturaRepository.Add(faktura);
+            unitOfWork.Save();
             return faktura;
         }
         public void BokTillBokning(List<Bok> boks)
