@@ -17,8 +17,8 @@ namespace Affärslager
         public Expidit Autentisering
         {
             get; private set;
-        }        
-
+        }
+        private UnitOfWork unitOfWork;
         public bool Inloggning(int anstNr, string lösenord)
         {
             unitOfWork = new UnitOfWork();
@@ -42,12 +42,14 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
+        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, List<Bok> bokadeBöcker)
         {
+            DateTime faktiskUtTid = default(DateTime);
+            DateTime återTid = default(DateTime);
             Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
-            return bokning;
-            
+            unitOfWork.Save();
+            return bokning;            
         }
 
         public Medlem Hittamedlem(int medlemNr)
@@ -60,138 +62,43 @@ namespace Affärslager
             return medlem;
         }
 
-        public void BokTillBokning(List<Bok> boks)
+        public Faktura SkapaFaktura(Bokning bokning) 
         {
-            IList<Bok> bokadeBöcker = new List<Bok>();
 
-                foreach (Bok b in boks)
-                {
-                    bokadeBöcker.Add(b);
-                    b.Bokad();
-                }           
-            //return bokadeBöcker;           
+            Faktura faktura = new Faktura(bokning, Autentisering, DateTime.Now);
+            if (faktura.TotalPris <0)
+            {
+                faktura.TotalPris = 0;
+            }
+            unitOfWork.FakturaRepository.Add(faktura);
+            unitOfWork.Save();
+            return faktura;
         }
 
         public Bok HittaBok(string boktitel)
         {
-            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
-            if (bok.Titel != null)
+            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower());
+            if (bok.Titel.ToLower() != null)
             {
                 bok.Titel = boktitel;
             }
             return bok;
         }
 
-
-
-        //public IList<Bokning> VisaBokning(Bokning bobo) // funkar ej, lyckades ej på denna front
-        //{
-
-        //    Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(db => db.BokningsNr == bobo.BokningsNr || db.Medlem.MedlemsNr == bobo.Medlem.MedlemsNr);
-
-        //    if (dinBokning != null && dinBokning.BokningsNr == bobo.BokningsNr)
-        //    {
-        //        bobo.BokningsNr = dinBokning.BokningsNr;
-
-        //    }
-        //    else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bobo.BokningsNr)
-        //    {
-        //        bobo.Medlem.MedlemsNr = dinBokning.Medlem.MedlemsNr;
-        //    }
-        //    return dinBokning as IList<Bokning>; // waaw
-
-        //}
-
-
-        public Bokning VisaBokning(int bob) // accepterade förlusten efter 2h - Denna funkar.
+        public Bokning VisaBokning(int bob) 
         {
-
-            IList<Bokning> boknings = new List<Bokning>(); // denna kan möjligtvis ändras från IList till IEnumerable
+            IList<Bokning> boknings = new List<Bokning>(); 
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bob || dinBokning.Medlem.MedlemsNr == bob);
             boknings.Where(db => db.BokningsNr == bob || db.Medlem.MedlemsNr == bob); 
             if (dinBokning != null && dinBokning.BokningsNr == bob)
             {
                 bob = dinBokning.BokningsNr;
-
             }
             else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bob)
             {
                 bob = dinBokning.Medlem.MedlemsNr;
             }
             return dinBokning; 
-
         }
-
-
-        //public Bokning BokaBok()
-        //{
-
-        //    Bokning bo = new Bokning();
-        //    unitOfWork.BokningRepository.Add(bo);
-        //    LoggedIn.Reserved = r;
-        //    unitOfWork.Save();
-        //    return r;
-        //}
-
-
-        // Kolla patriks kod för rumsbokning - Sax
-
-        //public List<TillgängligaBöcker> VisaTillgängligaBöcker() // Böcker som kan bli lånade
-        //{
-        //    return new List<TillgängligaBöcker>().ToString;
-        //}
-        //public List<BokadeBöcker> VisaBokadeBöcker() // Lista där bokade böcker läggs vid bokning - innan utlämning
-        //{
-        //    return new List<BokadeBöcker>().ToString;
-        //}
-
-        //public List<UtlånadeBöcker> VisaUtlånadeBöcker()  // Behövs troligen inte då hela bokningen cancelleras
-        //{
-        //    return new List<VisaUtlånadeBöcker>().ToString;
-        //}
-
-        //public Expidit SkapaInlogg(int anstNr, string lösenord) // Ska flyttas till repository för inlogg
-        //{
-        //    return databas.SkapaInLogg(anstNr, lösenord);
-        //}
-
-        //public Expidit SkapaInLogg(string anstNr, string lösenord) // Om vi har en ny klass som är "autentiserade" för att logga in skulle vi lägga till expediter i den
-        //{
-        //    if (Expediter.Find(a => a.AnstNr == anstNr) != null)
-        //        throw new Exception($"Expedit med {anstNr} har redan inlogg.");
-
-        //    Expidit expediten = new Expidit(anstNr, lösenord);
-        //    Expediter.Add(expediten);
-        //    return expediten;
-        //}
-
-        //public potatis()
-        //{
-        //    List<Bokning> bokningar = kontext.BokningKontroller.HämtaBokningar(kontext.Session.Användare); // Kan behöva vid val av datum innan bokning
-
-        //    {
-        //        Console.WriteLine($"Bokningnummer: {bokning.Bokningnummer}");
-        //        foreach (Bokningrad rad in bokning.Bokningrader)
-        //        {
-        //            Console.WriteLine("Rumnummer: {0}\tFrån: {1}\tTill: {2}",
-        //                rad.Grupprum.Rumnummer,
-        //                rad.Från.ToString("yyyy-MM-dd HH:mm"),
-        //                rad.Till.ToString("yyyy-MM-dd HH:mm"));
-        //        }
-        //    }
-        //}
-
-        /// <summary>
-        ///  The LogIn system operation.
-        /// </summary>
-        /// <param name="memberId"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        /// 
-        private UnitOfWork unitOfWork;
     }
-
-
-
-
 }
