@@ -32,6 +32,8 @@ namespace Affärslager
             return false;
         }
 
+        
+
         public IList<Bok> HämtaTillgängligaBöcker()
         {
             List<Bok> böcker = new List<Bok>();
@@ -46,8 +48,7 @@ namespace Affärslager
         {
             Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
-            return bokning;
-            
+            return bokning;            
         }
 
         public Medlem Hittamedlem(int medlemNr)
@@ -60,6 +61,17 @@ namespace Affärslager
             return medlem;
         }
 
+        public Faktura SkapaFaktura(Bokning bokning) 
+        {
+
+            Faktura faktura = new Faktura(bokning, Autentisering, DateTime.Now);
+            if (faktura.TotalPris <0)
+            {
+                faktura.TotalPris = 0;
+            }
+            unitOfWork.FakturaRepository.Add(faktura);
+            return faktura;
+        }
         public void BokTillBokning(List<Bok> boks)
         {
             IList<Bok> bokadeBöcker = new List<Bok>();
@@ -74,8 +86,8 @@ namespace Affärslager
 
         public Bok HittaBok(string boktitel)
         {
-            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel == boktitel);
-            if (bok.Titel != null)
+            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower());
+            if (bok.Titel.ToLower() != null)
             {
                 bok.Titel = boktitel;
             }
@@ -123,63 +135,6 @@ namespace Affärslager
         }
 
 
-        //public Bokning BokaBok()
-        //{
-
-        //    Bokning bo = new Bokning();
-        //    unitOfWork.BokningRepository.Add(bo);
-        //    LoggedIn.Reserved = r;
-        //    unitOfWork.Save();
-        //    return r;
-        //}
-
-
-        // Kolla patriks kod för rumsbokning - Sax
-
-        //public List<TillgängligaBöcker> VisaTillgängligaBöcker() // Böcker som kan bli lånade
-        //{
-        //    return new List<TillgängligaBöcker>().ToString;
-        //}
-        //public List<BokadeBöcker> VisaBokadeBöcker() // Lista där bokade böcker läggs vid bokning - innan utlämning
-        //{
-        //    return new List<BokadeBöcker>().ToString;
-        //}
-
-        //public List<UtlånadeBöcker> VisaUtlånadeBöcker()  // Behövs troligen inte då hela bokningen cancelleras
-        //{
-        //    return new List<VisaUtlånadeBöcker>().ToString;
-        //}
-
-        //public Expidit SkapaInlogg(int anstNr, string lösenord) // Ska flyttas till repository för inlogg
-        //{
-        //    return databas.SkapaInLogg(anstNr, lösenord);
-        //}
-
-        //public Expidit SkapaInLogg(string anstNr, string lösenord) // Om vi har en ny klass som är "autentiserade" för att logga in skulle vi lägga till expediter i den
-        //{
-        //    if (Expediter.Find(a => a.AnstNr == anstNr) != null)
-        //        throw new Exception($"Expedit med {anstNr} har redan inlogg.");
-
-        //    Expidit expediten = new Expidit(anstNr, lösenord);
-        //    Expediter.Add(expediten);
-        //    return expediten;
-        //}
-
-        //public potatis()
-        //{
-        //    List<Bokning> bokningar = kontext.BokningKontroller.HämtaBokningar(kontext.Session.Användare); // Kan behöva vid val av datum innan bokning
-
-        //    {
-        //        Console.WriteLine($"Bokningnummer: {bokning.Bokningnummer}");
-        //        foreach (Bokningrad rad in bokning.Bokningrader)
-        //        {
-        //            Console.WriteLine("Rumnummer: {0}\tFrån: {1}\tTill: {2}",
-        //                rad.Grupprum.Rumnummer,
-        //                rad.Från.ToString("yyyy-MM-dd HH:mm"),
-        //                rad.Till.ToString("yyyy-MM-dd HH:mm"));
-        //        }
-        //    }
-        //}
 
         /// <summary>
         ///  The LogIn system operation.

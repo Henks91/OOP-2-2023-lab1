@@ -8,17 +8,19 @@ namespace Entiteter
 {
     public class Faktura
     {
-        public Bokning BokningsNr;
+        public Bokning Bokning;
 
-        public Expidit AnstNr;
+        public Expidit Expidit;
         public DateTime FaktiskÅterTid { get; set; }
         public int TotalPris { get; set; }
-        public Faktura(Bokning bokningsNr, Expidit anstNr, DateTime faktiskÅterTid, int totalPris)
+        public int DagsKostnad = 10;
+        public Faktura(Bokning bokning, Expidit expidit, DateTime faktiskÅterTid)
         {
-            BokningsNr = bokningsNr;
-            AnstNr = anstNr;
+            Bokning = bokning;
+            Expidit = expidit;
             FaktiskÅterTid = faktiskÅterTid;
-            TotalPris = totalPris;
+            TotalPris = (int)((faktiskÅterTid - Bokning.ÅterTid).TotalDays)*DagsKostnad;
+
         }
     }
 }

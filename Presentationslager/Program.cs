@@ -79,8 +79,8 @@ namespace Presentationslager
         {
             DateTime faktiskUtTid = default(DateTime);
             DateTime tillbaka = default(DateTime);
-            bool stängNer = false; // Variabel för att avsluta programmet vid specifikt menyval
-            while (!stängNer)
+            bool stängNer = true; // Variabel för att avsluta programmet vid specifikt menyval
+            while (stängNer)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("EXPIDITIONENS BOKHANTERINGS MENY");
@@ -91,7 +91,7 @@ namespace Presentationslager
                 Console.WriteLine("3: Inlämning av böcker");
                 Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("4: Avsluta programmet");
+                Console.WriteLine("4: Logga ut");
                 Console.ForegroundColor = ConsoleColor.White;
 
                 switch (inmatninguINT("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
@@ -135,13 +135,13 @@ namespace Presentationslager
                             while (!avslut)
                             {                                
                                 Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
-                                string boknamn = Console.ReadLine();
+                                string boknamn = Console.ReadLine().ToLower();
                                 
                                 Bok b = kontroller.HittaBok(boknamn);
                                 
                                 if (b != null)
                                 {                                    
-                                    Console.WriteLine($"{b.Titel} har lagts till i bokning");
+                                    Console.WriteLine($"'{b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)}' har lagts till i bokning");
                                     ProvBok.Add(b);                                   
                                 }
                                 Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
@@ -160,37 +160,53 @@ namespace Presentationslager
                     case 2:
                         
                         Console.Clear();
-                        Console.WriteLine("Vill du hämta ut dina böcker? \nSkriv 'J' för 'JA' och 'N' för 'NEJ':");
-                        string val1 = Console.ReadLine().ToUpper();
-                        if (val1 == "J")
-                        {
+                       
                             Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                             int svar = int.Parse(Console.ReadLine());
                             Bokning bokning = kontroller.VisaBokning(svar);
                             
-                                Console.WriteLine("** Din bokning **");
-                                BokningUtskrift(bokning);
-                                bokning.Upphämtad();
-                                bokning.FaktisktUtTid = DateTime.Now;
-                                bokning.ÅterTid = DateTime.Now.AddDays(+14);
-                                Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);                           
-                        }
+                            Console.WriteLine("** Din bokning **");
+                            BokningUtskrift(bokning);
+                            bokning.Upphämtad();
+                            bokning.FaktisktUtTid = bokning.UtTid;
+                            bokning.ÅterTid = bokning.FaktisktUtTid.AddDays(+14);
+                            Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);                           
+                        
                                                 
                         break;
 
                     case 3:
                         Console.Clear();
-                        Console.WriteLine("Vill du lämna tillbaka dina böcker? \nSkriv 'J' för 'JA' och 'N' för 'NEJ':");
-                        string val2 = Console.ReadLine().ToUpper();
-                        if (val2 == "J")
+                            
+                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
+                        int svar1 = int.Parse(Console.ReadLine());
+
+                        Bokning bokning1 = kontroller.VisaBokning(svar1);                        
+                        if (bokning1.UppHämtad == false)
                         {
-                            Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
-                            int svar = int.Parse(Console.ReadLine());
+                            Console.WriteLine("Du kan inte lämna tillbaka en bokning som inte hämtats ut...");
                         }
+                        else
+                        {                           
+                            Console.WriteLine("** Din bokning **");
+                            BokningUtskrift(bokning1);
+                            bokning1.InteUppHämtad();
+                            Console.WriteLine("DU SKA BETALA DIN JÄVEL");
+                            foreach (Bok b in bokning1.BokadeBöcker)
+                            {
+                                b.Tillgänglig();
+                            }
+
+                            Faktura f = kontroller.SkapaFaktura(bokning1);
+                            FakturaUtskrift(f);
+                            Console.ReadLine();
+                        }                                             
                         break;
 
                     case 4:
-                        stängNer = true;
+                        Console.Clear();
+
+                        stängNer = false;
                         
                         break;
                     default:
@@ -221,6 +237,15 @@ namespace Presentationslager
                 }
                 x = false;
             }
+        }
+
+        private void FakturaUtskrift(Faktura f)
+        {
+            Console.WriteLine($"**** Faktura ****\n"+
+                $"Fakturan är skapad av: {f.Expidit.Namn}\n" +
+                $"Fakturan avser {f.Bokning.Medlem.Namn} med medlemsnummer: {f.Bokning.Medlem.MedlemsNr}\n" +
+                $"Återlämningsdatum för bokningen var: {f.FaktiskÅterTid}\n"+
+                $"Du skall betala: {f.TotalPris} kr");
         }
         private Kontroller kontroller;
     }
