@@ -3,32 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entiteter.Interface;
 
 namespace Entiteter
 {
-    public class Bokning
-    {
-        public int BokningsNr { get; set; } = - 1;
+    public class Bokning : IBokning
+    {       
+        private static int _BokningsNr = 0;
+        private int bokningsNr = 0;
+        public int BokningsNr { get { return bokningsNr; } }
 
-        public Expidit Expidit;
+        public Expidit Expidit { get; private set; } //fundera ´kring public här
 
-        public Medlem Medlem;
+        public Medlem Medlem { get; private set; }
 
         public IList<Bok> BokadeBöcker;
-        public DateTime UtTid { get; set; }
-        public DateTime FaktisktUtTid { get; set; }
-        public DateTime ÅterTid { get; set; }
+        public DateTime UtTid { get; set; }  //När man först planerar att hämta boken ifrån - 10 har jag plus 5 dagar att hämta boken
+        public DateTime FaktisktUtTid { get; set; } //När boken faktiskt blev upphämtad av medlem DATETIME NOW
+        public DateTime ÅterTid { get; set; } //När boken ska vara tillbaka lämnad, 14 dagar efter upphämtning
+        public bool UppHämtad { get; set; }
 
-        public Bokning(int bokningsNr, Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker)
+        public Bokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker, bool upphämtad)
         {
-            BokningsNr = bokningsNr;
+            _BokningsNr ++;
+            this.bokningsNr = _BokningsNr;
             Medlem = medlem;
             Expidit = expidit;
             BokadeBöcker = böcker;
             UtTid = utTid;
             FaktisktUtTid = faktiskUtTid;
             ÅterTid = återTid;
+            UppHämtad = upphämtad;
         }
-       
+        public void Upphämtad()
+        {
+            UppHämtad = true;
+        }
+        public void InteUppHämtad()
+        {
+            UppHämtad = false;
+        }
+
     }
 }

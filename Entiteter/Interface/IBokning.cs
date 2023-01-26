@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Entiteter.Interface
 {
-    public interface IBok
+    interface IBokning
     {
-        void Tillgänglig();
-        void Bokad();
+        void Upphämtad();
+
+        void InteUppHämtad();
         
     }
 }
