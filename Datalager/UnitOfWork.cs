@@ -84,9 +84,9 @@ namespace Datalager
             #endregion Böcker
 
             #region Medlemmar
-            MedlemRepository.Add(new Medlem(1, "Lukas Blomström", "073-4235322", "Lukas.blomström@hotmail.com"));
-            MedlemRepository.Add(new Medlem(2, "Jack Stenman", "073-13371337", "jacksten@gmail.com"));
-            MedlemRepository.Add(new Medlem(3, "Linn Aschberg", "073-73317331", "linn-aschberg@live.se"));
+            MedlemRepository.Add(new Medlem(001, "Lukas Blomström", "073-4235322", "Lukas.blomström@hotmail.com"));
+            MedlemRepository.Add(new Medlem(002, "Jack Stenman", "073-13371337", "jacksten@gmail.com"));
+            MedlemRepository.Add(new Medlem(003, "Linn Aschberg", "073-73317331", "linn-aschberg@live.se"));
             #endregion Medlemmar
 
             #region Bokningar

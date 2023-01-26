@@ -76,17 +76,7 @@ namespace Affärslager
             unitOfWork.Save();
             return faktura;
         }
-        public void BokTillBokning(List<Bok> boks)
-        {
-            IList<Bok> bokadeBöcker = new List<Bok>();
-
-                foreach (Bok b in boks)
-                {
-                    bokadeBöcker.Add(b);
-                    b.Bokad();
-                }           
-            //return bokadeBöcker;           
-        }
+        
 
         public Bok HittaBok(string boktitel)
         {

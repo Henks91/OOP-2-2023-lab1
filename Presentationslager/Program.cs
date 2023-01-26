@@ -119,19 +119,21 @@ namespace Presentationslager
 
                             Console.Clear();
 
-                            IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
-                            int i = 1;
-
-                            Console.WriteLine("** Tillgängliga böcker **");
-                            foreach (Bok b in tillgänglig)
-                            {
-                                Console.Write("{0}. ", i++);
-                                BokUtskrift(b);
-                            }
+                            
                             List<Bok> ProvBok = new List<Bok>();
                             bool avslut = false;
                             while (!avslut)
-                            {                                
+                            {
+
+                                IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
+                                int i = 1;
+
+                                Console.WriteLine("** Tillgängliga böcker **");
+                                foreach (Bok bU in tillgänglig)
+                                {
+                                    Console.Write("{0}. ", i++);
+                                    BokUtskrift(bU);
+                                }
                                 Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
                                 string boknamn = Console.ReadLine().ToLower();
                                 
@@ -140,7 +142,8 @@ namespace Presentationslager
                                 if (b != null)
                                 {                                    
                                     Console.WriteLine($"'{b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)}' har lagts till i bokning");
-                                    ProvBok.Add(b);                                   
+                                    ProvBok.Add(b);
+                                    b.Bokad();
                                 }
                                 Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
                                 string val = Console.ReadLine().ToUpper();
@@ -149,7 +152,7 @@ namespace Presentationslager
                                     avslut = true;                                   
                                 }
                             }
-                            kontroller.BokTillBokning(ProvBok);
+                            
                             Bokning bc= kontroller.SkapaBokning(medlem, från , ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
