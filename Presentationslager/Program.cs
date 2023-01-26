@@ -77,8 +77,6 @@ namespace Presentationslager
 
         private void Menyn()
         {
-            DateTime faktiskUtTid = default(DateTime);
-            DateTime tillbaka = default(DateTime);
             bool stängNer = true; // Variabel för att avsluta programmet vid specifikt menyval
             while (stängNer)
             {
@@ -152,7 +150,7 @@ namespace Presentationslager
                                 }
                             }
                             kontroller.BokTillBokning(ProvBok);
-                            Bokning bc= kontroller.SkapaBokning(medlem, från , tillbaka, faktiskUtTid, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Bokning bc= kontroller.SkapaBokning(medlem, från , ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
                             Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
@@ -218,7 +216,7 @@ namespace Presentationslager
         }
         private void BokUtskrift(Bok b)
         {
-            Console.WriteLine(b.Titel, b.ISBN);
+            Console.WriteLine($"Titel: {b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)}");
         }
 
         private void BokningUtskrift(Bokning bo) // snabb while loop, för undvika skapa string variabel + konvertera int variabler till string i foreach
@@ -233,7 +231,7 @@ namespace Presentationslager
                             //$" Aktuellt återlämningsdatum {bo.FaktisktUtTid}"); Ska vara med vid återlämning av böcker
                 foreach (Bok b in bo.BokadeBöcker)
                 {
-                    Console.WriteLine(b.Titel, b.ISBN);
+                    BokUtskrift(b);
                 }
                 x = false;
             }

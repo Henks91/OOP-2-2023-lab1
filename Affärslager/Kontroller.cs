@@ -44,8 +44,10 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
+        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, List<Bok> bokadeBöcker) //se över expidiit i ctor
         {
+            DateTime faktiskUtTid = default(DateTime);
+            DateTime återTid = default(DateTime);
             Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
             return bokning;            
