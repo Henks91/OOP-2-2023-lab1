@@ -27,7 +27,9 @@ namespace Presentationslager
                 {
                     if (Inloggning())
                     {
+                        Console.Clear();
                         Console.WriteLine("Inloggningen lyckades, välkommen ", kontroller.Autentisering.Namn);
+                        Console.WriteLine();
                         Menyn();
                     }
                     else
@@ -77,7 +79,6 @@ namespace Presentationslager
             bool stängNer = true; // Variabel för att avsluta programmet vid specifikt menyval
             while (stängNer)
             {
-                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("EXPIDITIONENS BOKHANTERINGS MENY");
                 Console.WriteLine("1: Skapa Bokning");
@@ -158,20 +159,20 @@ namespace Presentationslager
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar = int.Parse(Console.ReadLine());
                         Bokning bokning = kontroller.VisaBokning(svar);
-                        if (bokning.UtTid < DateTime.Now)
+                        if (bokning.StartLån < DateTime.Now)
                         {
                             Console.Clear();
                             Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning);
                             bokning.Upphämtad();
-                            bokning.FaktisktUtTid = bokning.UtTid;
-                            bokning.ÅterTid = bokning.FaktisktUtTid.AddDays(+14);
+                            bokning.FaktisktStartLån = bokning.StartLån;
+                            bokning.ÅterTid = bokning.FaktisktStartLån.AddDays(+14);
                             Console.WriteLine("\nTryck på ENTER för att komma vidare till menyn.");
                             Console.ReadLine();
                         }
                         else
                         {
-                            Console.WriteLine($"Du kan hämta ut din bok tidigast: {bokning.UtTid}");
+                            Console.WriteLine($"Du kan hämta ut din bok tidigast: {bokning.StartLån}");
                         }
 
                         break;
@@ -233,8 +234,8 @@ namespace Presentationslager
                 Console.WriteLine($" Bokningsnummer: {bo.BokningsNr}" + " \n" +
                             $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
                             $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +
-                            $" Planerat uthyrningsdatum: {bo.UtTid}" + "\n" +
-                            $" Planerat återlämningsdatum: {bo.UtTid.AddDays(+14)}");
+                            $" Planerat uthyrningsdatum: {bo.StartLån}" + "\n" +
+                            $" Planerat återlämningsdatum: {bo.StartLån.AddDays(+14)}");
                 foreach (Bok b in bo.BokadeBöcker)
                 {
                     BokUtskrift(b);

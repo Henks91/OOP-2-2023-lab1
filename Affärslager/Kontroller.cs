@@ -38,11 +38,11 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, List<Bok> bokadeBöcker)
+        public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)
         {
-            DateTime faktiskUtTid = default(DateTime);
+            DateTime faktiskstartLån = default(DateTime);
             DateTime återTid = default(DateTime);
-            Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid, faktiskUtTid, bokadeBöcker, false);
+            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
             unitOfWork.Save();
             return bokning;

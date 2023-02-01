@@ -15,20 +15,20 @@ namespace Entiteter
         public Medlem Medlem { get; private set; }
 
         public IList<Bok> BokadeBöcker;
-        public DateTime UtTid { get; set; }  //När man först planerar att hämta boken ifrån - 10 har jag plus 5 dagar att hämta boken
-        public DateTime FaktisktUtTid { get; set; } //När boken faktiskt blev upphämtad av medlem DATETIME NOW
+        public DateTime StartLån { get; set; }  //När man först planerar att hämta boken ifrån - 10 har jag plus 5 dagar att hämta boken
+        public DateTime FaktisktStartLån { get; set; } //När boken faktiskt blev upphämtad av medlem DATETIME NOW
         public DateTime ÅterTid { get; set; } //När boken ska vara tillbaka lämnad, 14 dagar efter upphämtning
         public bool UppHämtad { get; set; }
 
-        public Bokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker, bool upphämtad)
+        public Bokning(Expidit expidit, Medlem medlem, DateTime startLån, DateTime återTid, DateTime faktiskStartLån, IList<Bok> böcker, bool upphämtad)
         {
             _BokningsNr++;
             this.bokningsNr = _BokningsNr;
             Medlem = medlem;
             Expidit = expidit;
             BokadeBöcker = böcker;
-            UtTid = utTid;
-            FaktisktUtTid = faktiskUtTid;
+            StartLån = startLån;
+            FaktisktStartLån = faktiskStartLån;
             ÅterTid = återTid;
             UppHämtad = upphämtad;
         }
