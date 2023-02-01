@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entiteter
 {
@@ -14,13 +10,12 @@ namespace Entiteter
         public DateTime FaktiskÅterTid { get; set; }
         public int TotalPris { get; set; }
         public int DagsKostnad = 10;
-        public Faktura(Bokning bokning, Expidit expidit, DateTime faktiskÅterTid)
+        public Faktura(Bokning bokning, Expidit expidit, DateTime faktiskÅterTid, int antalBöcker)
         {
             Bokning = bokning;
             Expidit = expidit;
             FaktiskÅterTid = faktiskÅterTid;
-            TotalPris = (int)((faktiskÅterTid - Bokning.ÅterTid).TotalDays)*DagsKostnad;
-
+            TotalPris = (int)((faktiskÅterTid - Bokning.ÅterTid).TotalDays) * (DagsKostnad * antalBöcker);
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Entiteter.Interface;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entiteter.Interface;
 
 namespace Entiteter
 {
     public class Bokning : IBokning
-    {       
+    {
         private static int _BokningsNr = 0;
         private int bokningsNr = 0;
         public int BokningsNr { get { return bokningsNr; } }
@@ -25,7 +22,7 @@ namespace Entiteter
 
         public Bokning(Expidit expidit, Medlem medlem, DateTime utTid, DateTime återTid, DateTime faktiskUtTid, IList<Bok> böcker, bool upphämtad)
         {
-            _BokningsNr ++;
+            _BokningsNr++;
             this.bokningsNr = _BokningsNr;
             Medlem = medlem;
             Expidit = expidit;
