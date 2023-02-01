@@ -2,9 +2,6 @@
 using Entiteter;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Presentationslager
 {
@@ -14,7 +11,7 @@ namespace Presentationslager
         {
             new Program().Applikation();
         }
-        
+
         private Program()
         {
             kontroller = new Kontroller();
@@ -44,7 +41,7 @@ namespace Presentationslager
                 }
             }
         }
-        
+
         private bool Inloggning()
 
         {
@@ -65,8 +62,8 @@ namespace Presentationslager
         static uint inmatninguINT(string inmatningssträng)
         {
             Console.Write(inmatningssträng);
-            uint switchVal; 
-            while (!uint.TryParse(Console.ReadLine(), out switchVal)) 
+            uint switchVal;
+            while (!uint.TryParse(Console.ReadLine(), out switchVal))
             {
                 Console.WriteLine("Felaktig datatyp i ditt svar, endast siffror!");
                 Console.Write(inmatningssträng);
@@ -80,6 +77,7 @@ namespace Presentationslager
             bool stängNer = true; // Variabel för att avsluta programmet vid specifikt menyval
             while (stängNer)
             {
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("EXPIDITIONENS BOKHANTERINGS MENY");
                 Console.WriteLine("1: Skapa Bokning");
@@ -108,9 +106,9 @@ namespace Presentationslager
                                 Console.Write($"Försök igen, format (YYYY-MM-DD): ");
                                 DateTime.TryParse(Console.ReadLine(), out från);
                             }
-                            
+
                             Console.WriteLine("Ange medlemsnummer: ");
-                            
+
                             int medlemsnr = int.Parse(Console.ReadLine());
                             Medlem medlem = kontroller.Hittamedlem(medlemsnr);
 
@@ -124,48 +122,58 @@ namespace Presentationslager
                                 IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
                                 int i = 1;
 
-                                Console.WriteLine("** Tillgängliga böcker **");
+                                Console.WriteLine("**** Tillgängliga böcker ****");
                                 foreach (Bok bU in tillgänglig)
                                 {
                                     Console.Write("{0}. ", i++);
                                     BokUtskrift(bU);
                                 }
-                                Console.Write("Ange namn på bok som ska läggas till i bokningen: ");
+                                Console.Write("\nAnge titel på bok som ska läggas till i bokningen: ");
                                 string boknamn = Console.ReadLine().ToLower();
-                                
+
                                 Bok b = kontroller.HittaBok(boknamn);
-                                
+
                                 if (b != null)
-                                {                                    
-                                    Console.WriteLine($"'{b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)}' har lagts till i bokning");
+                                {
+                                    Console.WriteLine($"{b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)} har lagts till i bokning");
                                     ProvBok.Add(b);
                                     b.Bokad();
                                 }
-                                Console.WriteLine("Viil du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
+                                Console.WriteLine("\nVill du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
                                 string val = Console.ReadLine().ToUpper();
                                 if (val == "N")
-                                {                                  
-                                    avslut = true;                                   
+                                {
+                                    avslut = true;
                                 }
                             }
-                            Bokning bc= kontroller.SkapaBokning(medlem, från , ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
-                            Console.WriteLine($"Din bokning har: {bc.BokningsNr} som bokningsnummer.");
+                            Bokning bc = kontroller.SkapaBokning(medlem, från, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Console.WriteLine($"\nDin bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
 
                     case 2:
-                        
+
                         Console.Clear();
-                       
+
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar = int.Parse(Console.ReadLine());
                         Bokning bokning = kontroller.VisaBokning(svar);
-                        Console.WriteLine("** Din bokning **");
-                        BokningUtskrift(bokning);
-                        bokning.Upphämtad();
-                        bokning.FaktisktUtTid = bokning.UtTid;
-                        bokning.ÅterTid = bokning.FaktisktUtTid.AddDays(+14);
-                        Console.WriteLine("Boken skall lämnas tillbaka senast: {0}", bokning.ÅterTid);
+                        if (bokning.UtTid < DateTime.Now)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("**** Din bokning ****");
+                            BokningUtskrift(bokning);
+                            bokning.Upphämtad();
+                            bokning.FaktisktUtTid = bokning.UtTid;
+                            bokning.ÅterTid = bokning.FaktisktUtTid.AddDays(+14);
+                            Console.WriteLine("\nTryck på ENTER för att komma vidare till menyn.");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Du kan hämta ut din bok tidigast: {bokning.UtTid}");
+                        }
+
                         break;
 
                     case 3:
@@ -173,35 +181,37 @@ namespace Presentationslager
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar1 = int.Parse(Console.ReadLine());
 
-                        Bokning bokning1 = kontroller.VisaBokning(svar1);                        
+                        Bokning bokning1 = kontroller.VisaBokning(svar1);
                         if (bokning1.UppHämtad == false)
                         {
+                            Console.Clear();
                             Console.WriteLine("Du kan inte lämna tillbaka en bokning som inte hämtats ut...");
                         }
                         else
-                        {                           
-                            Console.WriteLine("** Din bokning **");
+                        {
+                            Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning1);
                             bokning1.InteUppHämtad();
                             Console.WriteLine();
                             foreach (Bok b in bokning1.BokadeBöcker)
                             {
                                 b.Tillgänglig();
+
                             }
 
                             Faktura f = kontroller.SkapaFaktura(bokning1);
                             FakturaUtskrift(f);
                             Console.ReadLine();
-                        }                                             
+                        }
                         break;
 
                     case 4:
                         Console.Clear();
 
                         stängNer = false;
-                        
+
                         break;
-                        default:
+                    default:
                         Console.WriteLine("Inkorrekt inmatning, välj ett av ovanstående alternativ"); //om användaren anger ett tal som inte finns som ett altetrnativ kommer ett felmeddelande presenteras.
                         Console.ReadLine();
                         break;
@@ -223,7 +233,8 @@ namespace Presentationslager
                 Console.WriteLine($" Bokningsnummer: {bo.BokningsNr}" + " \n" +
                             $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
                             $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +
-                            $" Planerat uthyrningsdatum: {bo.UtTid}" + " ");
+                            $" Planerat uthyrningsdatum: {bo.UtTid}" + "\n" +
+                            $" Planerat återlämningsdatum: {bo.UtTid.AddDays(+14)}");
                 foreach (Bok b in bo.BokadeBöcker)
                 {
                     BokUtskrift(b);
@@ -234,10 +245,15 @@ namespace Presentationslager
 
         private void FakturaUtskrift(Faktura f)
         {
-            Console.WriteLine($"**** Faktura ****\n"+
+            Console.WriteLine($"\n**** Faktura ****\n" +
                 $"Fakturan är skapad av: {f.Expidit.Namn}\n" +
                 $"Fakturan avser {f.Bokning.Medlem.Namn} med medlemsnummer: {f.Bokning.Medlem.MedlemsNr}\n" +
-                $"Återlämningsdatum för bokningen var: {f.FaktiskÅterTid}\n"+
+                "$Titel på böcker som fakturan avvser: ");
+            foreach (Bok b in f.Bokning.BokadeBöcker)
+            {
+                BokUtskrift(b);
+            }
+            Console.WriteLine($"Återlämningsdatum för bokningen var: {f.FaktiskÅterTid}\n" +
                 $"Du skall betala: {f.TotalPris} kr");
         }
         #endregion Utskrifter

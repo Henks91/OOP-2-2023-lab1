@@ -1,9 +1,4 @@
 ﻿using Entiteter.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entiteter
 {
@@ -14,7 +9,7 @@ namespace Entiteter
 
         public bool ÄrTillgänglig { get; set; }
 
-       
+
 
         public Bok(string titel, int isbn, bool status)
         {
@@ -31,6 +26,6 @@ namespace Entiteter
         {
             ÄrTillgänglig = false;
         }
-       
+
     }
 }
