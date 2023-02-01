@@ -64,7 +64,7 @@ namespace Affärslager
 
         public Faktura SkapaFaktura(Bokning bokning) 
         {
-
+            
             Faktura faktura = new Faktura(bokning, Autentisering, DateTime.Now);
             if (faktura.TotalPris <0)
             {
@@ -72,7 +72,13 @@ namespace Affärslager
             }
             unitOfWork.FakturaRepository.Add(faktura);
             unitOfWork.Save();
+            int antalBöcker = bokning.BokadeBöcker.Count();
             return faktura;
+        }
+        public int RäknaFaktura(Bokning bokning)
+        {
+            int antalBöcker = bokning.BokadeBöcker.Count();
+            return antalBöcker;
         }
 
         public Bok HittaBok(string boktitel)

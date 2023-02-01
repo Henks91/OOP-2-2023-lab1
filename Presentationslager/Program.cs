@@ -238,7 +238,7 @@ namespace Presentationslager
                 $"Fakturan är skapad av: {f.Expidit.Namn}\n" +
                 $"Fakturan avser {f.Bokning.Medlem.Namn} med medlemsnummer: {f.Bokning.Medlem.MedlemsNr}\n" +
                 $"Återlämningsdatum för bokningen var: {f.FaktiskÅterTid}\n"+
-                $"Du skall betala: {f.TotalPris} kr");
+                $"Du skall betala: {kontroller.RäknaFaktura(f.Bokning)} kr");
         }
         #endregion Utskrifter
     }
