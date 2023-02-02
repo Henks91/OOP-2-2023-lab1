@@ -159,14 +159,13 @@ namespace Presentationslager
 
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar = int.Parse(Console.ReadLine());
-                        Bokning bokning = kontroller.VisaBokning(svar);
+                        Bokning bokning = kontroller.UtlämningAvBöcker(svar);
                         if (bokning.StartLån < DateTime.Now)
                         {
                             Console.Clear();
                             Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning);
-                            bokning.Upphämtad();
-                            bokning.FaktisktStartLån = bokning.StartLån; //kan man köra datetime.now här istället för att  göra det mer realistiskt?
+                            bokning.FaktisktStartLån = bokning.StartLån; //här kan man köra datetime.now här istället för att göra det mer realistiskt men inte aktuellt för detta program
                             bokning.ÅterTid = bokning.FaktisktStartLån.AddDays(+14);
                             Console.WriteLine("\nTryck på ENTER för att komma vidare till menyn.");
                             Console.ReadLine();
@@ -183,7 +182,7 @@ namespace Presentationslager
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
                         int svar1 = int.Parse(Console.ReadLine());
 
-                        Bokning bokning1 = kontroller.VisaBokning(svar1);
+                        Bokning bokning1 = kontroller.LämnaTillbakaBok(svar1);
                         if (bokning1.UppHämtad == false)
                         {
                             Console.Clear();
@@ -193,7 +192,6 @@ namespace Presentationslager
                         {
                             Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning1);
-                            bokning1.InteUppHämtad();
                             Console.WriteLine();
                             foreach (Bok b in bokning1.BokadeBöcker)
                             {

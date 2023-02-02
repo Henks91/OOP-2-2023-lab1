@@ -51,10 +51,7 @@ namespace Affärslager
         public Medlem Hittamedlem(int medlemNr)
         {
             Medlem medlem = unitOfWork.MedlemRepository.FirstOrDefault(e => e.MedlemsNr == medlemNr);
-            if (medlem != null)
-            {
-                medlemNr = medlem.MedlemsNr;
-            }
+            
             return medlem;
         }
 
@@ -76,27 +73,20 @@ namespace Affärslager
         public Bok HittaBok(string boktitel)
         {
             Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower() && bk.ÄrTillgänglig == true);
-            if (bok.Titel.ToLower() != null)
-            {
-                bok.Titel = boktitel;
-            }
             
             return bok;
         }
 
-        public Bokning VisaBokning(int bNr)
+        public Bokning UtlämningAvBöcker(int bNr)
         {
-            IList<Bokning> boknings = new List<Bokning>();
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
-            boknings.Where(db => db.BokningsNr == bNr || db.Medlem.MedlemsNr == bNr);
-            if (dinBokning != null && dinBokning.BokningsNr == bNr)
-            {
-                bNr = dinBokning.BokningsNr;
-            }
-            else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bNr)
-            {
-                bNr = dinBokning.Medlem.MedlemsNr;
-            }
+            dinBokning.Upphämtad();
+            return dinBokning;
+        }
+        public Bokning LämnaTillbakaBok(int bNr)
+        {
+            Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            dinBokning.InteUppHämtad();
             return dinBokning;
         }
     }
