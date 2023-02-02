@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Datalager;
+using Entiteter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Datalager;
-using Entiteter;
 
 
 
@@ -42,14 +38,14 @@ namespace Affärslager
             return böcker;
         }
 
-        public Bokning SkapaBokning(Medlem medlem, DateTime utTid, List<Bok> bokadeBöcker)
+        public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)
         {
-            DateTime faktiskUtTid = default(DateTime);
+            DateTime faktiskstartLån = default(DateTime);
             DateTime återTid = default(DateTime);
-            Bokning bokning = new Bokning(Autentisering, medlem, utTid, återTid,  faktiskUtTid, bokadeBöcker, false);
+            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);
             unitOfWork.BokningRepository.Add(bokning);
             unitOfWork.Save();
-            return bokning;            
+            return bokning;
         }
 
         public Medlem Hittamedlem(int medlemNr)
@@ -62,43 +58,46 @@ namespace Affärslager
             return medlem;
         }
 
-        public Faktura SkapaFaktura(Bokning bokning) 
+        public Faktura SkapaFaktura(Bokning bokning)
         {
-
-            Faktura faktura = new Faktura(bokning, Autentisering, DateTime.Now);
-            if (faktura.TotalPris <0)
+            int antalBöcker = bokning.BokadeBöcker.Count();
+            Faktura faktura = new Faktura(bokning, Autentisering, DateTime.Now, antalBöcker);
+            if (faktura.TotalPris < 0)
             {
                 faktura.TotalPris = 0;
             }
             unitOfWork.FakturaRepository.Add(faktura);
             unitOfWork.Save();
+
             return faktura;
         }
 
+
         public Bok HittaBok(string boktitel)
         {
-            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower());
+            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower() && bk.ÄrTillgänglig == true);
             if (bok.Titel.ToLower() != null)
             {
                 bok.Titel = boktitel;
             }
+            
             return bok;
         }
 
-        public Bokning VisaBokning(int bob) 
+        public Bokning VisaBokning(int bNr)
         {
-            IList<Bokning> boknings = new List<Bokning>(); 
-            Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bob || dinBokning.Medlem.MedlemsNr == bob);
-            boknings.Where(db => db.BokningsNr == bob || db.Medlem.MedlemsNr == bob); 
-            if (dinBokning != null && dinBokning.BokningsNr == bob)
+            IList<Bokning> boknings = new List<Bokning>();
+            Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            boknings.Where(db => db.BokningsNr == bNr || db.Medlem.MedlemsNr == bNr);
+            if (dinBokning != null && dinBokning.BokningsNr == bNr)
             {
-                bob = dinBokning.BokningsNr;
+                bNr = dinBokning.BokningsNr;
             }
-            else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bob)
+            else if (dinBokning != null && dinBokning.Medlem.MedlemsNr == bNr)
             {
-                bob = dinBokning.Medlem.MedlemsNr;
+                bNr = dinBokning.Medlem.MedlemsNr;
             }
-            return dinBokning; 
+            return dinBokning;
         }
     }
 }

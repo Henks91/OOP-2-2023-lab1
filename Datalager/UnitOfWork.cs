@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Entiteter;
+﻿using Entiteter;
 
 namespace Datalager
 {
@@ -57,12 +55,12 @@ namespace Datalager
         ///  Save the changes made. Does nothing in this case.
         /// </summary>
         public void Save() // Tillagd enligt Anders instruktion för att simulera hur det skulle vara om vi sparar
-            { 
+        {
 
-            }
-        
+        }
+
         private void Fill()
-            {
+        {
             #region Expiditer
             ExpiditRepository.Add(new Expidit(11, "Magnus", "a", "Utvecklingsansvarig"));
             ExpiditRepository.Add(new Expidit(22, "Gustaf", "b", "Bibliotekarie"));
