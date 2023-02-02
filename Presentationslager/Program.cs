@@ -140,6 +140,7 @@ namespace Presentationslager
                                     ProvBok.Add(b);
                                     b.Bokad();
                                 }
+
                                 Console.WriteLine("\nVill du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
                                 string val = Console.ReadLine().ToUpper();
                                 if (val == "N")

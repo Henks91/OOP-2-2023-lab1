@@ -75,11 +75,12 @@ namespace Affärslager
 
         public Bok HittaBok(string boktitel)
         {
-            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower());
+            Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower() && bk.ÄrTillgänglig == true);
             if (bok.Titel.ToLower() != null)
             {
                 bok.Titel = boktitel;
             }
+            
             return bok;
         }
 
