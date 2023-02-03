@@ -59,7 +59,7 @@ namespace Datalager
 
         }
 
-        private void Fill()
+        private void Fill()  //hårdkodad data
         {
             #region Expiditer
             ExpiditRepository.Add(new Expidit(11, "Magnus", "a", "Utvecklingsansvarig"));
@@ -70,8 +70,8 @@ namespace Datalager
 
             #region Böcker
 
-            BokRepository.Add(new Bok("Bröd Och Mjölk", 1281894, false));
-            BokRepository.Add(new Bok("Allt är mitt", 183943, false));
+            BokRepository.Add(new Bok("Bröd Och Mjölk", 1281894, true));
+            BokRepository.Add(new Bok("Allt är mitt", 183943, true));
             BokRepository.Add(new Bok("Under Magnoliaträden", 3435342, true));
             BokRepository.Add(new Bok("Den andre", 442312, true));
             BokRepository.Add(new Bok("Icebreaker", 342345, true));

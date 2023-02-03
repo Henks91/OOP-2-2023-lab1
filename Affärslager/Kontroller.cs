@@ -27,8 +27,7 @@ namespace Affärslager
             Autentisering = null;
             return false;
         }
-
-        public IList<Bok> HämtaTillgängligaBöcker()
+        public IList<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
         {
             List<Bok> böcker = new List<Bok>();
             foreach (Bok b in unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true))
@@ -37,24 +36,25 @@ namespace Affärslager
             }
             return böcker;
         }
-
-        public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)
+        public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)  //metod för att instansiera en bokning
         {
-            DateTime faktiskstartLån = default(DateTime);
-            DateTime återTid = default(DateTime);
-            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);
-            unitOfWork.BokningRepository.Add(bokning);
+            DateTime faktiskstartLån = default(DateTime); //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
+            DateTime återTid = default(DateTime);         //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
+            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);          
+            foreach (var item in bokadeBöcker) // loop för att ändra bokens status från true (tillgänglig) till false (bokad)
+            {
+                item.Bokad();
+            }
+            unitOfWork.BokningRepository.Add(bokning);            
             unitOfWork.Save();
             return bokning;
         }
-
         public Medlem Hittamedlem(int medlemNr)
         {
             Medlem medlem = unitOfWork.MedlemRepository.FirstOrDefault(e => e.MedlemsNr == medlemNr);
             
             return medlem;
         }
-
         public Faktura SkapaFaktura(Bokning bokning)
         {
             int antalBöcker = bokning.BokadeBöcker.Count();
@@ -68,15 +68,12 @@ namespace Affärslager
 
             return faktura;
         }
-
-
         public Bok HittaBok(string boktitel)
         {
             Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower() && bk.ÄrTillgänglig == true);
             
             return bok;
         }
-
         public Bokning UtlämningAvBöcker(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
@@ -86,7 +83,6 @@ namespace Affärslager
         public Bokning LämnaTillbakaBok(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
-            dinBokning.InteUppHämtad();
             return dinBokning;
         }
     }

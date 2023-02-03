@@ -10,14 +10,14 @@ namespace Entiteter
         private int bokningsNr = 0;
         public int BokningsNr { get { return bokningsNr; } }
 
-        public Expidit Expidit { get; private set; } //fundera ´kring public här
+        public Expidit Expidit { get; private set; } 
 
         public Medlem Medlem { get; private set; }
 
         public IList<Bok> BokadeBöcker;
-        public DateTime StartLån { get; set; }  //När man först planerar att hämta boken ifrån - 10 har jag plus 5 dagar att hämta boken
-        public DateTime FaktisktStartLån { get; set; } //När boken faktiskt blev upphämtad av medlem DATETIME NOW
-        public DateTime ÅterTid { get; set; } //När boken ska vara tillbaka lämnad, 14 dagar efter upphämtning
+        public DateTime StartLån { get; private set; }  // Det datum som skrivs in när man först planerar att boka boken ifrån i menyval 1
+        public DateTime FaktisktStartLån { get; set; } //När boken faktiskt blev upphämtad av medlem, tex om upphämtning sker någon dag efter önskat startdatum på bokningen som angavs under menyval 1.
+        public DateTime ÅterTid { get; set; } //När boken ska vara tillbaka lämnad, 14 dagar efter startdatum för bokningen
         public bool UppHämtad { get; set; }
 
         public Bokning(Expidit expidit, Medlem medlem, DateTime startLån, DateTime återTid, DateTime faktiskStartLån, IList<Bok> böcker, bool upphämtad)
@@ -36,10 +36,5 @@ namespace Entiteter
         {
             UppHämtad = true;
         }
-        public void InteUppHämtad()
-        {
-            UppHämtad = false;
-        }
-
     }
 }

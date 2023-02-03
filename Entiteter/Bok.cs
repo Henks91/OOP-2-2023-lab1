@@ -4,12 +4,9 @@ namespace Entiteter
 {
     public class Bok : IBok
     {
-        public string Titel { get; set; }
-        public int ISBN { get; set; }
-
+        public string Titel { get; private set; }
+        public int ISBN { get; private set; }
         public bool ÄrTillgänglig { get; set; }
-
-
 
         public Bok(string titel, int isbn, bool status)
         {
@@ -17,12 +14,11 @@ namespace Entiteter
             ISBN = isbn;
             ÄrTillgänglig = status;
         }
-
-        public void Tillgänglig()
+        public void Tillgänglig() //ändrar bokens bool värde vid återlämning av böcker
         {
             ÄrTillgänglig = true;
         }
-        public void Bokad()
+        public void Bokad() //ändrar bokens bool värde vid skapandet av en bokning
         {
             ÄrTillgänglig = false;
         }

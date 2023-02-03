@@ -12,12 +12,12 @@ namespace Presentationslager
             new Program().Applikation();
         }
 
-        private Program()
+        private Program() //instansierar en kontroller som sedan anropas för att nå metoder vid körning.
         {
             kontroller = new Kontroller();
         }
         private Kontroller kontroller;
-        #region Inlogg
+        #region Inlogg 
         private void Applikation()
         {
             Console.WriteLine("Inloggning för Expiditapplikation");
@@ -59,9 +59,9 @@ namespace Presentationslager
 
             return kontroller.Inloggning(id, password);
         }
-        #endregion
+        #endregion   
         #region Inmatningskontroll
-        static uint inmatninguINT(string inmatningssträng)
+        static uint inmatninguINT(string inmatningssträng)  // kontrollerar inmatning från användaren
         {
             Console.Write(inmatningssträng);
             uint switchVal;
@@ -91,12 +91,12 @@ namespace Presentationslager
                 Console.WriteLine("4: Logga ut");
                 Console.ForegroundColor = ConsoleColor.White;
 
-                switch (inmatninguINT("Svara med en siffra för att göra ett val: ")) // om användaren matar in ett alfabetiskt värde kommer "RättSiffra" märka det och presentera ett felmeddelande.
+                switch (inmatninguINT("Svara med en siffra för att göra ett val: ")) // anropar inmatningsmetoden som hanterar inmatningen av val
                 {
                     case 1:
 
                         Console.Clear();
-                        Console.WriteLine("Från vilket datum vill du boka boken/böckerna: ");
+                        Console.WriteLine("Från vilket datum vill du boka boken/böckerna (YYYY-MM-DD): ");
                         string input = Console.ReadLine();
                         if (input != "")
                         {
@@ -104,7 +104,7 @@ namespace Presentationslager
                             DateTime.TryParse(input, out från);
                             while (från == DateTime.MinValue)
                             {
-                                Console.Write($"Försök igen, format (YYYY-MM-DD): ");
+                                Console.Write("Försök igen, format (YYYY-MM-DD): ");
                                 DateTime.TryParse(Console.ReadLine(), out från);
                             }
 
@@ -117,28 +117,26 @@ namespace Presentationslager
 
                             List<Bok> ProvBok = new List<Bok>();
                             bool avslut = false;
-                            while (!avslut)
+                            IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();  //hämtar tillgängliga böcker från BokRepository
+                            int i = 1;
+
+                            Console.WriteLine("**** Tillgängliga böcker ****");
+                            foreach (Bok bU in tillgänglig)
                             {
-
-                                IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();
-                                int i = 1;
-
-                                Console.WriteLine("**** Tillgängliga böcker ****");
-                                foreach (Bok bU in tillgänglig)
-                                {
-                                    Console.Write("{0}. ", i++);
-                                    BokUtskrift(bU);
-                                }
+                                Console.Write("{0}. ", i++);
+                                BokUtskrift(bU);
+                            }
+                            while (!avslut)
+                            {                                                           
                                 Console.Write("\nAnge titel på bok som ska läggas till i bokningen: ");
                                 string boknamn = Console.ReadLine().ToLower();
 
-                                Bok b = kontroller.HittaBok(boknamn);
+                                Bok b = kontroller.HittaBok(boknamn); //jämför inmatat boknamn mot Boktitlar i BokRepository
 
                                 if (b != null)
                                 {
                                     Console.WriteLine($"{b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)} har lagts till i bokning");
-                                    ProvBok.Add(b);
-                                    b.Bokad();
+                                    ProvBok.Add(b);                                   
                                 }
 
                                 Console.WriteLine("\nVill du lägga till en till bok i bokningen? \n Skriv 'J' för 'JA' och 'N' för 'NEJ': ");
@@ -148,7 +146,7 @@ namespace Presentationslager
                                     avslut = true;
                                 }
                             }
-                            Bokning bc = kontroller.SkapaBokning(medlem, från, ProvBok); // bara faktisktid som behöver hanteras när vi fixar återlämning av bok
+                            Bokning bc = kontroller.SkapaBokning(medlem, från, ProvBok); 
                             Console.WriteLine($"\nDin bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;
@@ -157,7 +155,7 @@ namespace Presentationslager
 
                         Console.Clear();
 
-                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
+                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); 
                         int svar = int.Parse(Console.ReadLine());
                         Bokning bokning = kontroller.UtlämningAvBöcker(svar);
                         if (bokning.StartLån < DateTime.Now)
@@ -179,7 +177,7 @@ namespace Presentationslager
 
                     case 3:
                         Console.Clear();
-                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); // bara snabbtest, funkar nu men inte testat utförligt, färdig 23:55
+                        Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); 
                         int svar1 = int.Parse(Console.ReadLine());
 
                         Bokning bokning1 = kontroller.LämnaTillbakaBok(svar1);
@@ -225,7 +223,7 @@ namespace Presentationslager
             Console.WriteLine($"Titel: {b.Titel[0].ToString().ToUpper()}{b.Titel.Substring(1)}");
         }
 
-        private void BokningUtskrift(Bokning bo) // snabb while loop, för undvika skapa string variabel + konvertera int variabler till string i foreach
+        private void BokningUtskrift(Bokning bo) 
         {
             bool x = true;
             while (x)
