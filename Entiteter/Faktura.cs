@@ -7,8 +7,8 @@ namespace Entiteter
         public Bokning Bokning;
 
         public Expidit Expidit;
-        public DateTime FaktiskÅterTid { get; set; }
-        public int TotalPris { get; set; }
+        public DateTime FaktiskÅterTid { get; private set; }
+        public int TotalPris { get; set; } //tilldels ett värde under program.cs därav public set...
         public int DagsKostnad = 10;
         public Faktura(Bokning bokning, Expidit expidit, DateTime faktiskÅterTid, int antalBöcker)
         {
