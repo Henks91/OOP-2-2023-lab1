@@ -10,14 +10,20 @@ namespace Affärslager
 {
     public class Kontroller
     {
+        public Kontroller(DataDbContext dataDbContext) 
+        { 
+            unitOfWork = new UnitOfWork(dataDbContext);
+        }
+
+        public UnitOfWork unitOfWork { get; set; }
         public Expidit Autentisering
         {
             get; private set;
         }
-        private UnitOfWork unitOfWork;
+        
         public bool Inloggning(int anstNr, string lösenord)
         {
-            unitOfWork = new UnitOfWork();
+            //unitOfWork = new UnitOfWork(); (Hänvisning till rad 13-16)
             Expidit expidit = unitOfWork.ExpiditRepository.FirstOrDefault(e => e.AnstNr == anstNr);
             if (expidit != null && expidit.Lösenordskontroll(lösenord))
             {
