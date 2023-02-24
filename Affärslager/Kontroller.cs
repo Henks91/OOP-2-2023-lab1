@@ -29,11 +29,8 @@ namespace Affärslager
         }
         public IList<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
         {
-            List<Bok> böcker = new List<Bok>();
-            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true))
-            {
-                böcker.Add(b);
-            }
+            List<Bok> böcker = (unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true)).ToList();
+            
             return böcker;
         }
         public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)  //metod för att instansiera en bokning
@@ -78,6 +75,8 @@ namespace Affärslager
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
             dinBokning.Upphämtad();
+            dinBokning.FaktisktStartLån = DateTime.Now;
+            dinBokning.ÅterTid = DateTime.Now.AddDays(+14);
             return dinBokning;
         }
         public Bokning LämnaTillbakaBok(int bNr)
