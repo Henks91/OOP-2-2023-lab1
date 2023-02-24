@@ -189,12 +189,6 @@ namespace Presentationslager
                             Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning1);
                             Console.WriteLine();
-                            foreach (Bok b in bokning1.BokadeBöcker)
-                            {
-                                b.Tillgänglig();
-
-                            }
-
                             Faktura f = kontroller.SkapaFaktura(bokning1);
                             FakturaUtskrift(f);
                             Console.ReadLine();

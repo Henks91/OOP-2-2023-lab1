@@ -82,6 +82,11 @@ namespace Affärslager
         public Bokning LämnaTillbakaBok(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            foreach (Bok b in dinBokning.BokadeBöcker)
+            {
+                b.Tillgänglig();
+
+            }
             return dinBokning;
         }
     }
