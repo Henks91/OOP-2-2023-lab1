@@ -117,7 +117,7 @@ namespace Presentationslager
 
                             List<Bok> ProvBok = new List<Bok>();
                             bool avslut = false;
-                            IList<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();  //hämtar tillgängliga böcker från BokRepository
+                            List<Bok> tillgänglig = kontroller.HämtaTillgängligaBöcker();  //hämtar tillgängliga böcker från BokRepository
                             int i = 1;
 
                             Console.WriteLine("**** Tillgängliga böcker ****");
@@ -181,9 +181,9 @@ namespace Presentationslager
                     case 3:
                         Console.Clear();
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); 
-                        int svar1 = int.Parse(Console.ReadLine());
+                        int bNr = int.Parse(Console.ReadLine());
 
-                        Bokning bokning1 = kontroller.LämnaTillbakaBok(svar1);
+                        Bokning bokning1 = kontroller.LämnaTillbakaBok(bNr);
                         if (bokning1 == null)
                         {
                             Console.Clear();
