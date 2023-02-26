@@ -167,8 +167,6 @@ namespace Presentationslager
                         {
                             Console.Clear();
                             BokningUtskrift(bokning);
-                            bokning.FaktisktStartLån = bokning.StartLån; //här kan man köra datetime.now här istället för att göra det mer realistiskt men inte aktuellt för detta program
-                            bokning.ÅterTid = bokning.FaktisktStartLån.AddDays(+14);
                             Console.WriteLine("\nTryck på ENTER för att komma vidare till menyn.");
                             Console.ReadLine();
                         }

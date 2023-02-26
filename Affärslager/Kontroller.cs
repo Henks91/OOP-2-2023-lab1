@@ -78,6 +78,8 @@ namespace Affärslager
             {
                 return null;
             }
+            dinBokning.FaktisktStartLån = dinBokning.StartLån; //här kan man köra datetime.now här istället för att göra det mer realistiskt men inte aktuellt för detta program
+            dinBokning.ÅterTid = dinBokning.FaktisktStartLån.AddDays(+14);
             dinBokning.Upphämtad();
             return dinBokning;
         }
