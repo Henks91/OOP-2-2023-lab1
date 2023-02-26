@@ -158,19 +158,24 @@ namespace Presentationslager
                         Console.WriteLine("Ange bokningsnummer eller medlemsnummer för att visa bokning: "); 
                         int svar = int.Parse(Console.ReadLine());
                         Bokning bokning = kontroller.UtlämningAvBöcker(svar);
-                        if (bokning.StartLån < DateTime.Now)
+                        if (bokning == null)
+                        {
+                            Console.WriteLine("Du kan inte hämta ut en bokning som redan är upphämtad.\nFör att komma till menyn tryck ENTER.");
+                            Console.ReadLine();
+                        }
+                        if (bokning != null && bokning.StartLån < DateTime.Now)
                         {
                             Console.Clear();
-                            Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning);
                             bokning.FaktisktStartLån = bokning.StartLån; //här kan man köra datetime.now här istället för att göra det mer realistiskt men inte aktuellt för detta program
                             bokning.ÅterTid = bokning.FaktisktStartLån.AddDays(+14);
                             Console.WriteLine("\nTryck på ENTER för att komma vidare till menyn.");
                             Console.ReadLine();
                         }
-                        else
+                        else if (bokning != null)
                         {
-                            Console.WriteLine($"Du kan hämta ut din bok tidigast: {bokning.StartLån}");
+                            Console.WriteLine($"Du kan hämta ut din bok tidigast: {bokning.StartLån}\nFör att komma till menyn tryck ENTER.");
+                            Console.ReadLine();
                         }
 
                         break;
@@ -181,22 +186,16 @@ namespace Presentationslager
                         int svar1 = int.Parse(Console.ReadLine());
 
                         Bokning bokning1 = kontroller.LämnaTillbakaBok(svar1);
-                        if (bokning1.UppHämtad == false)
+                        if (bokning1 == null)
                         {
                             Console.Clear();
-                            Console.WriteLine("Du kan inte lämna tillbaka en bokning som inte hämtats ut...");
+                            Console.WriteLine("Du kan inte återlämna en bokning som inte är upphämtad eller redan återlämnad.\nFör att komma till menyn tryck ENTER.");
+                            Console.ReadLine();
                         }
-                        else
+                        else if (bokning1 != null)
                         {
-                            Console.WriteLine("**** Din bokning ****");
                             BokningUtskrift(bokning1);
                             Console.WriteLine();
-                            foreach (Bok b in bokning1.BokadeBöcker)
-                            {
-                                b.Tillgänglig();
-
-                            }
-
                             Faktura f = kontroller.SkapaFaktura(bokning1);
                             FakturaUtskrift(f);
                             Console.ReadLine();
@@ -228,6 +227,7 @@ namespace Presentationslager
             bool x = true;
             while (x)
             {
+                Console.WriteLine("**** Din bokning ****");
                 Console.WriteLine($" Bokningsnummer: {bo.BokningsNr}" + " \n" +
                             $" Bokad av: {bo.Expidit.AnstNr} " + " \n" +
                             $" Medlemsnummer: {bo.Medlem.MedlemsNr}" + " \n" +

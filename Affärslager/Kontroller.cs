@@ -27,20 +27,17 @@ namespace Affärslager
             Autentisering = null;
             return false;
         }
-        public IList<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
+        public List<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
         {
-            List<Bok> böcker = new List<Bok>();
-            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true))
-            {
-                böcker.Add(b);
-            }
+            List<Bok> böcker = unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true)
+                .ToList();
             return böcker;
         }
         public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)  //metod för att instansiera en bokning
         {
             DateTime faktiskstartLån = default(DateTime); //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
             DateTime återTid = default(DateTime);         //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
-            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);          
+            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false, false);          
             foreach (var item in bokadeBöcker) // loop för att ändra bokens status från true (tillgänglig) till false (bokad)
             {
                 item.Bokad();
@@ -77,12 +74,26 @@ namespace Affärslager
         public Bokning UtlämningAvBöcker(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            if (dinBokning.UppHämtad == true)
+            {
+                return null;
+            }
             dinBokning.Upphämtad();
             return dinBokning;
         }
         public Bokning LämnaTillbakaBok(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            if (dinBokning.Återlämnad == true || dinBokning.UppHämtad == false)
+            {
+                return null;
+            }
+            foreach (Bok b in dinBokning.BokadeBöcker)
+            {
+                b.Tillgänglig();
+
+            }
+            dinBokning.ÅterlämnadBokning();
             return dinBokning;
         }
     }
