@@ -37,10 +37,10 @@ namespace Affärslager
         {
             DateTime faktiskstartLån = default(DateTime); //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
             DateTime återTid = default(DateTime);         //Dessa värden sätts som default eftersom de tilldelas ett värde senare för uthämtning av bok, därav propertyns public synlighet
-            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false);          
-            foreach (var item in bokadeBöcker) // loop för att ändra bokens status från true (tillgänglig) till false (bokad)
+            Bokning bokning = new Bokning(Autentisering, medlem, startLån, återTid, faktiskstartLån, bokadeBöcker, false, false);          
+            foreach (var b in bokadeBöcker) // loop för att ändra bokens status från true (tillgänglig) till false (bokad)
             {
-                item.Bokad();
+                b.Bokad();
             }
             unitOfWork.BokningRepository.Add(bokning);            
             unitOfWork.Save();
@@ -60,9 +60,10 @@ namespace Affärslager
             {
                 faktura.TotalPris = 0;
             }
+            bokning.Återlämna();
             unitOfWork.FakturaRepository.Add(faktura);
             unitOfWork.Save();
-
+            
             return faktura;
         }
         public Bok HittaBok(string boktitel)
@@ -82,11 +83,13 @@ namespace Affärslager
         public Bokning LämnaTillbakaBok(int bNr)
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
+            
             foreach (Bok b in dinBokning.BokadeBöcker)
             {
                 b.Tillgänglig();
 
             }
+            
             return dinBokning;
         }
     }

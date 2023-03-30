@@ -179,15 +179,20 @@ namespace Presentationslager
                         int svar1 = int.Parse(Console.ReadLine());
 
                         Bokning bokning1 = kontroller.LämnaTillbakaBok(svar1);
-                        if (bokning1.UppHämtad == false)
+                        if (bokning1.UppHämtad == false || bokning1.Återlämnad == true)
                         {
                             Console.Clear();
                             Console.WriteLine("Du kan inte lämna tillbaka en bokning som inte hämtats ut...");
                         }
+                        else if (bokning1.Återlämnad == true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Du kan inte lämna tillbaka en bokning som redan lämnats in...");
+                        }
                         else
                         {
                             Console.WriteLine("**** Din bokning ****");
-                            BokningUtskrift(bokning1);
+                            kontroller.BokningUtskrift(bokning1);
                             Console.WriteLine();
                             Faktura f = kontroller.SkapaFaktura(bokning1);
                             FakturaUtskrift(f);
