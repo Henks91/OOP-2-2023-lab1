@@ -100,12 +100,12 @@ namespace Presentationslager
                         string input = Console.ReadLine();
                         if (input != "")
                         {
-                            DateTime från;
-                            DateTime.TryParse(input, out från);
-                            while (från == DateTime.MinValue)
+                            DateTime StartLån;
+                            DateTime.TryParse(input, out StartLån);
+                            while (StartLån == DateTime.MinValue)
                             {
                                 Console.Write("Försök igen, format (YYYY-MM-DD): ");
-                                DateTime.TryParse(Console.ReadLine(), out från);
+                                DateTime.TryParse(Console.ReadLine(), out StartLån);
                             }
 
                             Console.WriteLine("Ange medlemsnummer: ");
@@ -146,7 +146,7 @@ namespace Presentationslager
                                     avslut = true;
                                 }
                             }
-                            Bokning bc = kontroller.SkapaBokning(medlem, från, ProvBok); 
+                            Bokning bc = kontroller.SkapaBokning(medlem, StartLån, ProvBok); 
                             Console.WriteLine($"\nDin bokning har: {bc.BokningsNr} som bokningsnummer.");
                         }
                         break;

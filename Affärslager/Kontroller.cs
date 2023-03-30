@@ -27,13 +27,10 @@ namespace Affärslager
             Autentisering = null;
             return false;
         }
-        public IList<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
+        public List<Bok> HämtaTillgängligaBöcker() //metod för att lista alla tillgängliga böcker som ligger i BokRepository
         {
-            List<Bok> böcker = new List<Bok>();
-            foreach (Bok b in unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true))
-            {
-                böcker.Add(b);
-            }
+            List<Bok> böcker = unitOfWork.BokRepository.Find(b => b.ÄrTillgänglig == true)
+                .ToList();
             return böcker;
         }
         public Bokning SkapaBokning(Medlem medlem, DateTime startLån, List<Bok> bokadeBöcker)  //metod för att instansiera en bokning
@@ -52,7 +49,6 @@ namespace Affärslager
         public Medlem Hittamedlem(int medlemNr)
         {
             Medlem medlem = unitOfWork.MedlemRepository.FirstOrDefault(e => e.MedlemsNr == medlemNr);
-            
             return medlem;
         }
         public Faktura SkapaFaktura(Bokning bokning)
@@ -71,7 +67,6 @@ namespace Affärslager
         public Bok HittaBok(string boktitel)
         {
             Bok bok = unitOfWork.BokRepository.FirstOrDefault(bk => bk.Titel.ToLower() == boktitel.ToLower() && bk.ÄrTillgänglig == true);
-            
             return bok;
         }
         public Bokning UtlämningAvBöcker(int bNr)
