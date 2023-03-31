@@ -27,7 +27,7 @@
   <Class Name="Entiteter.Bokning">
     <Position X="4.75" Y="3.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>EAAAABAAAAFIgBAAAQAQAAAAACAABAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EAAAABAAAAFIgBAAAQAQAAAAACAABAAAQAAAAAAAAEA=</HashCode>
       <FileName>Bokning.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

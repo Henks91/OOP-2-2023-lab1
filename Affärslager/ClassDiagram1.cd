@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Affärslager.Kontroller">
+    <Position X="9.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAgAAIQAAAEAAAACAAAABAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Kontroller.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="unitOfWork" />
+      <Property Name="Autentisering" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Datalager.Repository&lt;T&gt;">
+    <Position X="15.25" Y="1" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Datalager.UnitOfWork">
+    <Position X="12.25" Y="1" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="BokningRepository" />
+      <Property Name="BokRepository" />
+      <Property Name="ExpiditRepository" />
+      <Property Name="FakturaRepository" />
+      <Property Name="MedlemRepository" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entiteter.Bok">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Entiteter.Bokning">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Medlem" />
+      <Property Name="Expidit" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entiteter.Expidit">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Entiteter.Faktura">
+    <Position X="3" Y="8" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Field Name="Bokning" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entiteter.Medlem">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

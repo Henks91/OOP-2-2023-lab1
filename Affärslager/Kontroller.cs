@@ -76,8 +76,8 @@ namespace Affärslager
         {
             Bokning dinBokning = unitOfWork.BokningRepository.FirstOrDefault(dinBokning => dinBokning.BokningsNr == bNr || dinBokning.Medlem.MedlemsNr == bNr);
             dinBokning.Upphämtad();
-            dinBokning.FaktisktStartLån = DateTime.Now;
-            dinBokning.ÅterTid = DateTime.Now.AddDays(+14);
+            dinBokning.FaktisktStartLån = dinBokning.StartLån;//I ett verkligt scenario hade man haft "FaktisktStartLån" & "ÅterTid" till DateTime.Now istället för bokning.StartLån.
+            dinBokning.ÅterTid = dinBokning.StartLån.AddDays(+14);// Detta för att kunna testa så att priset kan skrivas ut!
             return dinBokning;
         }
         public Bokning LämnaTillbakaBok(int bNr)
